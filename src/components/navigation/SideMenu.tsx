@@ -1,5 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Animated, Modal, Pressable, TouchableOpacity, View } from "react-native";
+import {
+  Animated,
+  Modal,
+  Pressable,
+  ScrollView,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Text from "../ui/AppText";
@@ -44,8 +52,15 @@ function MenuSection({
               activeOpacity={0.85}
               onPress={() => onNavigate(item.route)}
               className={`rounded-[24px] px-4 py-3 ${
-                isActive ? "bg-primary-light" : "bg-surface"
+                isActive ? "bg-primary-light" : "bg-white"
               }`}
+              style={{
+                shadowColor: "rgba(51,50,56,0.05)",
+                shadowOffset: { width: 0, height: 6 },
+                shadowOpacity: 1,
+                shadowRadius: 18,
+                elevation: 2,
+              }}
             >
               <View className="flex-row items-start gap-3">
                 <View className="mt-0.5 h-9 w-9 items-center justify-center rounded-full bg-white">
@@ -82,7 +97,9 @@ export default function SideMenu({
   onNavigate,
   visible,
 }: SideMenuProps) {
-  const translateX = useRef(new Animated.Value(-340)).current;
+  const { width } = useWindowDimensions();
+  const drawerWidth = Math.min(Math.max(width - 20, 320), 360);
+  const translateX = useRef(new Animated.Value(-360)).current;
   const overlayOpacity = useRef(new Animated.Value(0)).current;
   const [mounted, setMounted] = useState(visible);
 
@@ -106,7 +123,7 @@ export default function SideMenu({
 
     Animated.parallel([
       Animated.timing(translateX, {
-        toValue: -340,
+        toValue: -drawerWidth,
         duration: 180,
         useNativeDriver: true,
       }),
@@ -120,7 +137,7 @@ export default function SideMenu({
         setMounted(false);
       }
     });
-  }, [overlayOpacity, translateX, visible]);
+  }, [drawerWidth, overlayOpacity, translateX, visible]);
 
   const handleNavigate = useMemo(
     () => (route: AppRoute) => {
@@ -135,24 +152,37 @@ export default function SideMenu({
   }
 
   return (
-    <Modal transparent visible={mounted} onRequestClose={onClose}>
-      <View className="flex-1 flex-row">
+    <Modal
+      transparent
+      statusBarTranslucent
+      visible={mounted}
+      onRequestClose={onClose}
+    >
+      <View className="flex-1">
         <Animated.View
-          className="absolute inset-0 bg-[rgba(51,50,56,0.25)]"
+          className="absolute inset-0 bg-[rgba(51,50,56,0.38)]"
           style={{ opacity: overlayOpacity }}
         >
           <Pressable className="flex-1" onPress={onClose} />
         </Animated.View>
 
         <Animated.View
-          className="h-full w-[320px] bg-surface"
-          style={{ transform: [{ translateX }] }}
+          className="absolute bottom-0 left-0 top-0 overflow-hidden rounded-r-[36px] bg-surface"
+          style={{
+            width: drawerWidth,
+            transform: [{ translateX }],
+            shadowColor: "rgba(51,50,56,0.16)",
+            shadowOffset: { width: 12, height: 0 },
+            shadowOpacity: 1,
+            shadowRadius: 28,
+            elevation: 18,
+          }}
         >
-          <SafeAreaView className="flex-1 px-5 pb-6 pt-4" edges={["top", "bottom"]}>
-            <View className="mb-6 flex-row items-center justify-between">
-              <View>
-                <Text className="font-brand text-[30px] italic text-primary">
-                  Popble
+          <SafeAreaView className="flex-1 bg-surface" edges={["top", "bottom", "left"]}>
+            <View className="flex-row items-start gap-3 px-5 pb-5 pt-4">
+              <View className="flex-1 pr-1">
+                <Text className="text-[24px] font-semibold leading-8 text-primary">
+                  메뉴
                 </Text>
                 <Text className="mt-1 text-[13px] leading-[18px] text-muted">
                   원하는 화면으로 빠르게 이동해보세요.
@@ -161,13 +191,17 @@ export default function SideMenu({
               <TouchableOpacity
                 activeOpacity={0.85}
                 onPress={onClose}
-                className="h-10 w-10 items-center justify-center rounded-full bg-surface-secondary"
+                className="mt-0.5 h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface-secondary"
               >
                 <Ionicons name="close-outline" size={24} color="#844d74" />
               </TouchableOpacity>
             </View>
 
-            <View className="flex-1 gap-6">
+            <ScrollView
+              className="flex-1 px-5"
+              contentContainerStyle={{ paddingBottom: 28, gap: 24 }}
+              showsVerticalScrollIndicator={false}
+            >
               <MenuSection
                 activeRoute={activeRoute}
                 items={PRIMARY_MENU_ITEMS}
@@ -180,11 +214,9 @@ export default function SideMenu({
                 title="Explore"
                 onNavigate={handleNavigate}
               />
-            </View>
+            </ScrollView>
           </SafeAreaView>
         </Animated.View>
-
-        <Pressable className="flex-1" onPress={onClose} />
       </View>
     </Modal>
   );
