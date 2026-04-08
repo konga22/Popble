@@ -27,6 +27,9 @@ export default function HomeScreen({
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingTop: 96, paddingBottom: 120, gap: 32 }}
+        directionalLockEnabled
+        disableScrollViewPanResponder
+        nestedScrollEnabled
         showsVerticalScrollIndicator={false}
       >
         <View className="px-4 gap-8">
