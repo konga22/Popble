@@ -201,9 +201,10 @@ const EXPLORE_SHORTCUTS: ExploreShortcut[] = [
   },
 ];
 
-const SEARCH_ENTRY_STAGGER_MS = 18;
-const SEARCH_TOP_BAR_ENTRY_DURATION_MS = 140;
-const SEARCH_CONTENT_ENTRY_DURATION_MS = 165;
+const SEARCH_ENTRY_STAGGER_MS = 8;
+const SEARCH_TOP_BAR_ENTRY_DURATION_MS = 95;
+const SEARCH_CONTENT_ENTRY_DURATION_MS = 110;
+const SEARCH_RANKING_SLIDE_DURATION_MS = 170;
 
 function SearchTopBar({
   detailOpen,
@@ -459,7 +460,7 @@ function SearchRankingSection({ onSelect }: SearchRankingSectionProps) {
         slide.setValue(0);
         Animated.timing(slide, {
           toValue: 1,
-          duration: 280,
+          duration: SEARCH_RANKING_SLIDE_DURATION_MS,
           easing: Easing.out(Easing.cubic),
           useNativeDriver: true,
         }).start(({ finished }) => {

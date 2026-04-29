@@ -11,6 +11,7 @@ import {
   getActiveTab,
   type AppScreenProps,
 } from "./src/global/navigation/appRoutes";
+import { TabEventProvider } from "./src/global/navigation/TabEventContext";
 import HomeScreen from "./src/screens/HomeScreen";
 import MapScreen from "./src/screens/MapScreen";
 import CommunityMainScreen from "./src/screens/CommunityMainScreen";
@@ -83,17 +84,19 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <HomeFeatureProvider>
-        <View className="flex-1 bg-surface">
-          {renderScreen(route, screenProps)}
-          <SideMenu
-            activeRoute={route}
-            onClose={() => setMenuVisible(false)}
-            onNavigate={(nextRoute) => setRoute(nextRoute)}
-            visible={menuVisible}
-          />
-        </View>
-      </HomeFeatureProvider>
+      <TabEventProvider>
+        <HomeFeatureProvider>
+          <View className="flex-1 bg-surface">
+            {renderScreen(route, screenProps)}
+            <SideMenu
+              activeRoute={route}
+              onClose={() => setMenuVisible(false)}
+              onNavigate={(nextRoute) => setRoute(nextRoute)}
+              visible={menuVisible}
+            />
+          </View>
+        </HomeFeatureProvider>
+      </TabEventProvider>
     </SafeAreaProvider>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { Animated } from "react-native";
+import { Animated, Easing } from "react-native";
 import { TAB_CONFIG, type TabName } from "./tabConfig";
 
 type ScaleMap = Record<TabName, Animated.Value>;
@@ -23,22 +23,36 @@ export default function useBottomNavAnimation(
   translateY?: Animated.Value
 ): UseBottomNavAnimationResult {
   const scaleByTabRef = useRef<ScaleMap | null>(null);
+  const previousActiveTabRef = useRef<TabName>(activeTab);
 
   if (!scaleByTabRef.current) {
     scaleByTabRef.current = createScaleMap();
   }
 
   useEffect(() => {
-    const animations = TAB_CONFIG.map((tab) =>
-      Animated.spring(scaleByTabRef.current![tab.id], {
-        toValue: tab.id === activeTab ? 1.02 : 1,
+    const scaleByTab = scaleByTabRef.current!;
+    const previousActiveTab = previousActiveTabRef.current;
+
+    if (previousActiveTab === activeTab) {
+      scaleByTab[activeTab].setValue(1.01);
+      return undefined;
+    }
+
+    const affectedTabs = [previousActiveTab, activeTab];
+    const animations = affectedTabs.map((tabName) =>
+      Animated.timing(scaleByTab[tabName], {
+        toValue: tabName === activeTab ? 1.01 : 1,
+        duration: 90,
+        easing: Easing.out(Easing.quad),
         useNativeDriver: true,
-        tension: 150,
-        friction: 18,
       })
     );
+    const animation = Animated.parallel(animations);
 
-    Animated.parallel(animations).start();
+    previousActiveTabRef.current = activeTab;
+    animation.start();
+
+    return () => animation.stop();
   }, [activeTab]);
 
   const containerStyle = useMemo(

@@ -21,6 +21,7 @@ import {
   type TabTransitionDirection,
 } from "./appRoutes";
 import { TAB_CONFIG, type TabName } from "./tabConfig";
+import { TabEventProvider } from "./TabEventContext";
 
 const AppNavigationContext = createContext<AppScreenProps | null>(null);
 
@@ -123,22 +124,24 @@ export default function NavigationRoot() {
 
   return (
     <AppNavigationProvider>
-      <HomeFeatureProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" options={{ animation: "none" }} />
-          <Stack.Screen name="map" options={{ animation: "none" }} />
-          <Stack.Screen name="community" options={{ animation: "none" }} />
-          <Stack.Screen name="saved" options={{ animation: "none" }} />
-          <Stack.Screen name="profile" options={{ animation: "none" }} />
-          <Stack.Screen name="community-feed" />
-          <Stack.Screen name="review" />
-          <Stack.Screen name="partner" />
-          <Stack.Screen name="search" options={{ animation: "none" }} />
-          <Stack.Screen name="popups/[id]" />
-          <Stack.Screen name="popups/section/[section]" />
-          <Stack.Screen name="popups/submit" />
-        </Stack>
-      </HomeFeatureProvider>
+      <TabEventProvider>
+        <HomeFeatureProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" options={{ animation: "none" }} />
+            <Stack.Screen name="map" options={{ animation: "none" }} />
+            <Stack.Screen name="community" options={{ animation: "none" }} />
+            <Stack.Screen name="saved" options={{ animation: "none" }} />
+            <Stack.Screen name="profile" options={{ animation: "none" }} />
+            <Stack.Screen name="community-feed" />
+            <Stack.Screen name="review" />
+            <Stack.Screen name="partner" />
+            <Stack.Screen name="search" options={{ animation: "none" }} />
+            <Stack.Screen name="popups/[id]" />
+            <Stack.Screen name="popups/section/[section]" />
+            <Stack.Screen name="popups/submit" />
+          </Stack>
+        </HomeFeatureProvider>
+      </TabEventProvider>
     </AppNavigationProvider>
   );
 }

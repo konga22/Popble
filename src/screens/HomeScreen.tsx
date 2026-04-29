@@ -82,6 +82,8 @@ type ClosingDigestProps = {
   onOpenSection: () => void;
 };
 
+const HOME_BOTTOM_NAV_OFFSET = 16;
+
 function HomeHeader({ onOpenSearch }: HomeHeaderProps) {
   return (
     <View className="absolute left-0 right-0 top-0 z-20">
@@ -742,13 +744,17 @@ export default function HomeScreen({
         onPress={onOpenSubmission}
         accessibilityRole="button"
         accessibilityLabel="새 팝업 제보 작성"
-        className="absolute bottom-24 right-5 z-20 min-h-12 flex-row items-center gap-2 rounded-[8px] bg-heading px-4"
+        className="absolute bottom-32 right-5 z-30 min-h-12 flex-row items-center gap-2 rounded-[8px] bg-heading px-4"
       >
         <Ionicons name="add" size={18} color="white" />
         <Text className="text-[14px] font-semibold text-white">제보</Text>
       </TouchableOpacity>
 
-      <BottomNavBar activeTab={activeTab} onTabPress={onTabPress} />
+      <BottomNavBar
+        activeTab={activeTab}
+        bottomOffset={HOME_BOTTOM_NAV_OFFSET}
+        onTabPress={onTabPress}
+      />
     </View>
   );
 }

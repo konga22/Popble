@@ -133,13 +133,13 @@ export default function SideMenu({
       Animated.parallel([
         Animated.timing(translateX, {
           toValue: 0,
-          duration: 220,
-          easing: Easing.out(Easing.cubic),
+          duration: 160,
+          easing: Easing.out(Easing.quad),
           useNativeDriver: true,
         }),
         Animated.timing(overlayOpacity, {
           toValue: 1,
-          duration: 220,
+          duration: 140,
           easing: Easing.out(Easing.quad),
           useNativeDriver: true,
         }),
@@ -150,13 +150,13 @@ export default function SideMenu({
     Animated.parallel([
       Animated.timing(translateX, {
         toValue: -drawerWidth,
-        duration: 180,
+        duration: 120,
         easing: Easing.in(Easing.cubic),
         useNativeDriver: true,
       }),
       Animated.timing(overlayOpacity, {
         toValue: 0,
-        duration: 180,
+        duration: 110,
         easing: Easing.in(Easing.quad),
         useNativeDriver: true,
       }),

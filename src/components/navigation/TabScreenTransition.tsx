@@ -6,8 +6,8 @@ type TabScreenTransitionProps = PropsWithChildren<{
   direction: TabTransitionDirection;
 }>;
 
-const TAB_SCREEN_TRANSITION_DISTANCE = 34;
-const TAB_SCREEN_TRANSITION_DURATION_MS = 220;
+const TAB_SCREEN_TRANSITION_DISTANCE = 18;
+const TAB_SCREEN_TRANSITION_DURATION_MS = 120;
 
 export default function TabScreenTransition({
   children,
@@ -45,7 +45,7 @@ export default function TabScreenTransition({
       flex: 1,
       opacity: entry.interpolate({
         inputRange: [0, 1],
-        outputRange: [0.94, 1],
+        outputRange: [0.98, 1],
       }),
       transform: [
         {
