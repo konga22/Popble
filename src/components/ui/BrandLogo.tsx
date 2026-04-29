@@ -7,13 +7,13 @@ type BrandLogoProps = {
 };
 
 const CONTAINER_BY_SIZE = {
-  sm: "h-[40px]",
-  md: "h-[46px]",
+  sm: "h-[40px] w-[140px]",
+  md: "h-[46px] w-[158px]",
 } as const;
 
 const TEXT_BY_SIZE = {
-  sm: "text-[36px] leading-[36px]",
-  md: "text-[42px] leading-[42px]",
+  sm: "text-[28px] leading-[32px]",
+  md: "text-[32px] leading-[36px]",
 } as const;
 
 export default function BrandLogo({ size = "sm" }: BrandLogoProps) {
@@ -23,34 +23,34 @@ export default function BrandLogo({ size = "sm" }: BrandLogoProps) {
   return (
     <View className={`relative items-center justify-center ${containerClassName}`}>
       <Text
-        className={`absolute font-brand italic tracking-[-1.2px] text-bubble-sky ${textClassName}`}
+        className={`absolute font-brand italic tracking-[0px] text-bubble-sky ${textClassName}`}
         style={{
           opacity: 0.88,
           transform: [{ translateX: -1.9 }, { translateY: 1.5 }],
         }}
       >
-        Popble
+        팝업메이트
       </Text>
       <Text
-        className={`absolute font-brand italic tracking-[-1.2px] text-bubble-pink ${textClassName}`}
+        className={`absolute font-brand italic tracking-[0px] text-bubble-pink ${textClassName}`}
         style={{
           opacity: 0.92,
           transform: [{ translateX: 1.8 }, { translateY: -0.8 }],
         }}
       >
-        Popble
+        팝업메이트
       </Text>
       <Text
-        className={`absolute font-brand italic tracking-[-1.2px] text-white ${textClassName}`}
+        className={`absolute font-brand italic tracking-[0px] text-white ${textClassName}`}
         style={{
           opacity: 0.92,
           transform: [{ translateY: -1.4 }],
         }}
       >
-        Popble
+        팝업메이트
       </Text>
       <Text
-        className={`font-brand italic tracking-[-1.2px] text-bubble-logo ${textClassName}`}
+        className={`font-brand italic tracking-[0px] text-bubble-logo ${textClassName}`}
         style={{
           textShadowColor: "rgba(255,255,255,0.95)",
           textShadowOffset: { width: 0, height: -1 },
@@ -58,7 +58,7 @@ export default function BrandLogo({ size = "sm" }: BrandLogoProps) {
           transform: [{ scaleX: 1.04 }],
         }}
       >
-        Popble
+        팝업메이트
       </Text>
     </View>
   );

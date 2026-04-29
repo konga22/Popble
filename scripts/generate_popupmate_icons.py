@@ -172,7 +172,7 @@ def draw_mark(canvas: Canvas, scale: float = 1.0, offset_y: float = 0.0, with_sh
 
     ink = COLORS["ink"]
 
-    # Popble mark: a mono popup frame with one bubble escaping the corner.
+    # 팝업메이트 mark: a mono popup frame with one bubble escaping the corner.
     canvas.rounded_rect(ox - 236 * s, oy - 176 * s, ox + 102 * s, oy - 64 * s, 56 * s, ink, 255)
     canvas.rounded_rect(ox - 236 * s, oy - 176 * s, ox - 124 * s, oy + 202 * s, 56 * s, ink, 255)
     canvas.rounded_rect(ox - 236 * s, oy + 90 * s, ox + 134 * s, oy + 202 * s, 56 * s, ink, 255)

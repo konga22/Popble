@@ -45,7 +45,7 @@ export default function ProfileScreen({
               <Ionicons name="person" size={28} color={COLORS.primary} />
             </View>
             <Text className="mt-4 text-[24px] font-semibold leading-8 text-heading">
-              Popble Mate
+              팝업메이트 메이트
             </Text>
             <Text className="mt-1 text-[14px] leading-5 text-muted">
               저장한 팝업 12개, 작성한 리뷰 8개, 파트너 매칭 3회

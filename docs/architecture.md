@@ -1,13 +1,13 @@
-# Popble 아키텍처
+# 팝업메이트 아키텍처
 
-Popble은 Expo SDK 54, React Native 0.81, TypeScript strict, NativeWind v4 기반 모바일 앱이다. 현재 Expo Router가 도입되어 `app/` route 파일이 진입점을 맡고, 실제 화면 UI는 `src/screens/`와 `src/components/`에 유지한다.
+팝업메이트는 Expo SDK 54, React Native 0.81, TypeScript strict, NativeWind v4 기반 모바일 앱이다. 현재 Expo Router가 도입되어 `app/` route 파일이 진입점을 맡고, 실제 화면 UI는 `src/screens/`와 `src/components/`에 유지한다.
 
 ---
 
 ## 디렉토리 구조
 
 ```txt
-Popble/
+팝업메이트/
 ├── app/
 │   ├── _layout.tsx
 │   ├── index.tsx

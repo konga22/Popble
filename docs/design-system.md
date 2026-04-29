@@ -1,6 +1,6 @@
-# Popble 디자인 시스템
+# 팝업메이트 디자인 시스템
 
-Popble의 테마는 파스텔 퍼플 / 라벤더 드림이다. 색상 토큰은 `tailwind.config.js`와 `src/constants/colors.ts`를 기준으로 유지한다.
+팝업메이트의 테마는 파스텔 퍼플 / 라벤더 드림이다. 색상 토큰은 `tailwind.config.js`와 `src/constants/colors.ts`를 기준으로 유지한다.
 
 ---
 

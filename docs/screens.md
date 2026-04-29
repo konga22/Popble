@@ -1,4 +1,4 @@
-# Popble 화면 목록 & 스펙
+# 팝업메이트 화면 목록 & 스펙
 
 피그마 파일키: `C8fidVKmN9LrNnDkIVbLyu`
 전체 섹션 Node ID: `5:171`

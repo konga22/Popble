@@ -51,7 +51,7 @@ export const HOME_SECTION_META: Record<
   trending: {
     title: "현재 인기 있는 팝업",
     actionLabel: "전체보기",
-    description: "지금 Popble에서 가장 많이 열어본 팝업이에요.",
+    description: "지금 팝업메이트에서 가장 많이 열어본 팝업이에요.",
   },
   comingSoon: {
     title: "곧 오픈할 팝업",

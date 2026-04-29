@@ -1,8 +1,8 @@
-# Popble — Claude Code 총괄 가이드
+# 팝업메이트 — Claude Code 총괄 가이드
 
 ## 프로젝트 개요
 
-**Popble**은 한국의 팝업 스토어를 발견·탐색·공유하는 모바일 앱이다.
+**팝업메이트**는 한국의 팝업 스토어를 발견·탐색·공유하는 모바일 앱이다.
 피그마 파일: `C8fidVKmN9LrNnDkIVbLyu` (star_star_project)
 테마: 파스텔 퍼플 / 라벤더 드림
 
@@ -20,7 +20,7 @@
 ## 파일 구조
 
 ```
-Popble/
+팝업메이트/
 ├── src/
 │   ├── screens/        # 화면 단위 컴포넌트 (1파일 = 1화면)
 │   ├── components/     # 재사용 컴포넌트

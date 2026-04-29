@@ -84,7 +84,7 @@ export default function PopupCollectionScreen({
               <View className="flex-row items-center gap-2">
                 <Ionicons name="sparkles" size={17} color="white" />
                 <Text className="text-[12px] font-semibold uppercase tracking-[1.2px] text-white/75">
-                  Popble Pick
+                  팝업메이트 추천
                 </Text>
               </View>
               <Text className="mt-2 text-[24px] font-semibold leading-8 text-white">

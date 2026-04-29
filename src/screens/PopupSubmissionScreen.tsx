@@ -74,7 +74,7 @@ export default function PopupSubmissionScreen({
             Popup Report
           </Text>
           <Text className="mt-2 text-[28px] font-semibold leading-9 text-white">
-            새로 발견한 팝업을{"\n"}Popble에 알려주세요
+            새로 발견한 팝업을{"\n"}팝업메이트에 알려주세요
           </Text>
           <Text className="mt-3 text-[14px] leading-5 text-white/80">
             운영팀 확인 후 홈 추천과 지도에 반영할 수 있어요.
