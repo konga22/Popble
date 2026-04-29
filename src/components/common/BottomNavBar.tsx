@@ -6,7 +6,7 @@ import { useTabEvent } from "../../global/navigation/TabEventContext";
 
 export type { TabName } from "../../global/navigation/tabConfig";
 
-const DEFAULT_BOTTOM_NAV_OFFSET = 16;
+const DEFAULT_BOTTOM_NAV_OFFSET = 0;
 
 type BottomNavBarProps = {
   activeTab: TabName;

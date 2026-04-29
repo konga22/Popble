@@ -21,6 +21,7 @@ import {
 } from "../features/home/homeData";
 import { useHomeFeature } from "../features/home/HomeFeatureContext";
 import type { AppScreenProps } from "../global/navigation/appRoutes";
+import { useTabEvent } from "../global/navigation/TabEventContext";
 
 type HomeScreenProps = AppScreenProps & {
   onOpenPopup: (popupId: string) => void;
@@ -82,7 +83,7 @@ type ClosingDigestProps = {
   onOpenSection: () => void;
 };
 
-const HOME_BOTTOM_NAV_OFFSET = 16;
+const HOME_BOTTOM_NAV_OFFSET = 0;
 
 function HomeHeader({ onOpenSearch }: HomeHeaderProps) {
   return (
@@ -623,6 +624,9 @@ export default function HomeScreen({
     togglePopupReminder,
     toggleSavedPopup,
   } = useHomeFeature();
+  const { status: tabEventStatus, targetTab: tabEventTargetTab } = useTabEvent();
+  const isTabEventBubbleVisible =
+    tabEventStatus === "bubble" && activeTab !== tabEventTargetTab;
 
   const allHomePopups = [
     ...feed.trendingPopups,
@@ -739,16 +743,18 @@ export default function HomeScreen({
         </View>
       </ScrollView>
 
-      <TouchableOpacity
-        activeOpacity={0.85}
-        onPress={onOpenSubmission}
-        accessibilityRole="button"
-        accessibilityLabel="새 팝업 제보 작성"
-        className="absolute bottom-32 right-5 z-30 min-h-12 flex-row items-center gap-2 rounded-[8px] bg-heading px-4"
-      >
-        <Ionicons name="add" size={18} color="white" />
-        <Text className="text-[14px] font-semibold text-white">제보</Text>
-      </TouchableOpacity>
+      {isTabEventBubbleVisible ? null : (
+        <TouchableOpacity
+          activeOpacity={0.85}
+          onPress={onOpenSubmission}
+          accessibilityRole="button"
+          accessibilityLabel="새 팝업 제보 작성"
+          className="absolute bottom-28 right-5 z-30 min-h-12 flex-row items-center gap-2 rounded-[8px] bg-heading px-4"
+        >
+          <Ionicons name="add" size={18} color="white" />
+          <Text className="text-[14px] font-semibold text-white">제보</Text>
+        </TouchableOpacity>
+      )}
 
       <BottomNavBar
         activeTab={activeTab}
