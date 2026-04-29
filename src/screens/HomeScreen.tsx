@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Image,
   ImageBackground,
+  RefreshControl,
   ScrollView,
   StatusBar,
   TouchableOpacity,
@@ -32,6 +33,10 @@ type HomeScreenProps = AppScreenProps & {
 
 type HomeHeaderProps = {
   onOpenSearch: () => void;
+};
+
+type HomePullBackdropProps = {
+  image: string;
 };
 
 type ActionStatProps = {
@@ -84,6 +89,21 @@ type ClosingDigestProps = {
 };
 
 const HOME_BOTTOM_NAV_OFFSET = 0;
+const HOME_REFRESH_DURATION_MS = 700;
+
+function HomePullBackdrop({ image }: HomePullBackdropProps) {
+  return (
+    <View pointerEvents="none" className="absolute left-0 right-0 top-0 h-[620px]">
+      <ImageBackground
+        source={{ uri: image }}
+        className="h-full w-full bg-heading"
+        resizeMode="cover"
+      >
+        <View className="absolute inset-0 bg-black/45" />
+      </ImageBackground>
+    </View>
+  );
+}
 
 function HomeHeader({ onOpenSearch }: HomeHeaderProps) {
   return (
@@ -616,8 +636,10 @@ export default function HomeScreen({
   onOpenSearch,
   onOpenSubmission,
 }: HomeScreenProps) {
-  const feed = getHomeFeed();
+  const feed = useMemo(() => getHomeFeed(), []);
   const heroPopup = feed.trendingPopups[0];
+  const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
   const {
     isPopupReminderEnabled,
     isPopupSaved,
@@ -628,15 +650,44 @@ export default function HomeScreen({
   const isTabEventBubbleVisible =
     tabEventStatus === "bubble" && activeTab !== tabEventTargetTab;
 
-  const allHomePopups = [
-    ...feed.trendingPopups,
-    ...feed.comingSoonPopups,
-    ...feed.closingSoonPopups,
-  ];
-  const savedPopups = allHomePopups.filter((popup) => isPopupSaved(popup.id));
+  useEffect(
+    () => () => {
+      if (refreshTimeoutRef.current) {
+        clearTimeout(refreshTimeoutRef.current);
+      }
+    },
+    []
+  );
+
+  const handleRefresh = useCallback(() => {
+    if (refreshTimeoutRef.current) {
+      clearTimeout(refreshTimeoutRef.current);
+    }
+
+    setRefreshing(true);
+    refreshTimeoutRef.current = setTimeout(() => {
+      setRefreshing(false);
+      refreshTimeoutRef.current = null;
+    }, HOME_REFRESH_DURATION_MS);
+  }, []);
+
+  const allHomePopups = useMemo(
+    () => [
+      ...feed.trendingPopups,
+      ...feed.comingSoonPopups,
+      ...feed.closingSoonPopups,
+    ],
+    [feed]
+  );
+  const savedPopups = useMemo(
+    () => allHomePopups.filter((popup) => isPopupSaved(popup.id)),
+    [allHomePopups, isPopupSaved]
+  );
   const savedPreview = savedPopups[0] ?? feed.trendingPopups[0];
-  const savedBoardItems =
-    savedPopups.length > 0 ? savedPopups : feed.trendingPopups;
+  const savedBoardItems = useMemo(
+    () => (savedPopups.length > 0 ? savedPopups : feed.trendingPopups),
+    [feed.trendingPopups, savedPopups]
+  );
   const comingSoonPreview = feed.comingSoonPopups[0];
   const closingSoonPreview = feed.closingSoonPopups[0];
   const savedCount = savedPopups.length;
@@ -645,7 +696,8 @@ export default function HomeScreen({
   const closingSoonCount = feed.closingSoonPopups.length;
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-heading">
+      <HomePullBackdrop image={heroPopup.image} />
       <StatusBar
         barStyle="light-content"
         backgroundColor="transparent"
@@ -653,8 +705,17 @@ export default function HomeScreen({
       />
 
       <ScrollView
-        className="flex-1"
+        className="flex-1 bg-transparent"
         contentContainerStyle={{ paddingBottom: 132 }}
+        refreshControl={
+          <RefreshControl
+            colors={[COLORS.primary]}
+            progressBackgroundColor={COLORS.surfaceStrong}
+            refreshing={refreshing}
+            tintColor={COLORS.primary}
+            onRefresh={handleRefresh}
+          />
+        }
         showsVerticalScrollIndicator={false}
       >
         <ImageBackground
