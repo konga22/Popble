@@ -8,6 +8,7 @@ export type ClosingSoonItemProps = {
   subtitle: string;
   badge: string;
   urgent?: boolean;
+  onPress: () => void;
 };
 
 export default function ClosingSoonItem({
@@ -16,10 +17,14 @@ export default function ClosingSoonItem({
   subtitle,
   badge,
   urgent,
+  onPress,
 }: ClosingSoonItemProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.85}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`${title}, ${subtitle}, ${badge}`}
       className="flex-row items-center bg-surface-secondary rounded-[32px] p-3"
     >
       <Image
@@ -34,7 +39,7 @@ export default function ClosingSoonItem({
       </View>
       <View
         className={`rounded-2xl px-2 py-1 ${
-          urgent ? "bg-[rgba(249,115,134,0.2)]" : "bg-[#e5e1e9]"
+          urgent ? "bg-[rgba(249,115,134,0.2)]" : "bg-badge-muted"
         }`}
       >
         <Text

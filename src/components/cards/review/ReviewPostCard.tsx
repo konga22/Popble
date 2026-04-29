@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Image, TouchableOpacity } from "react-native";
 import Text from "../../ui/AppText";
+import { COLORS } from "../../../constants/colors";
 
 export type ReviewPostCardProps = {
   avatar: string;
@@ -22,12 +23,14 @@ type StarsProps = {
   size?: number;
 };
 
+const STAR_STEPS = [1, 2, 3, 4, 5] as const;
+
 function Stars({ rating, size = 14 }: StarsProps) {
   return (
     <View className="flex-row gap-0.5">
-      {[1, 2, 3, 4, 5].map((index) => (
-        <Text key={index} style={{ fontSize: size, color: "#844d74" }}>
-          {index <= Math.floor(rating) ? "★" : index - 0.5 <= rating ? "½" : "☆"}
+      {STAR_STEPS.map((step) => (
+        <Text key={`star-${step}`} style={{ fontSize: size, color: COLORS.primary }}>
+          {step <= Math.floor(rating) ? "★" : step - 0.5 <= rating ? "½" : "☆"}
         </Text>
       ))}
     </View>
@@ -35,11 +38,16 @@ function Stars({ rating, size = 14 }: StarsProps) {
 }
 
 function ReviewImageStack({ images }: { images: readonly [string, string] }) {
+  const orderedImages = [
+    { id: "left-review-image", image: images[0] },
+    { id: "right-review-image", image: images[1] },
+  ] as const;
+
   return (
     <View className="flex-row gap-3">
-      {images.map((image, index) => (
+      {orderedImages.map(({ id, image }) => (
         <View
-          key={`${image}-${index}`}
+          key={id}
           className="flex-1 rounded-[32px] overflow-hidden"
           style={{
             shadowColor: "#000",
@@ -115,11 +123,21 @@ export default function ReviewPostCard({
       <View className="px-2 gap-4">
         <Text className="text-heading text-sm leading-[22px]">{body}</Text>
         <View className="flex-row gap-4">
-          <TouchableOpacity className="flex-row items-center gap-1" activeOpacity={0.85}>
+          <TouchableOpacity
+            className="min-h-11 flex-row items-center gap-1"
+            activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel={`${username} 리뷰 좋아요 ${likes}개`}
+          >
             <Text className="text-xl">{liked ? "❤️" : "🤍"}</Text>
             <Text className="text-primary text-xs font-bold">{likes}</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="flex-row items-center gap-1" activeOpacity={0.85}>
+          <TouchableOpacity
+            className="min-h-11 flex-row items-center gap-1"
+            activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel={`${username} 리뷰 댓글 ${comments}개`}
+          >
             <Text className="text-xl">💬</Text>
             <Text className="text-muted text-xs">{comments}</Text>
           </TouchableOpacity>

@@ -13,6 +13,8 @@ export default function ExchangeItem({ image, label, title, time }: ExchangeItem
   return (
     <TouchableOpacity
       activeOpacity={0.85}
+      accessibilityRole="button"
+      accessibilityLabel={`${title}, ${label}, ${time}`}
       className="flex-1 bg-white rounded-[32px] overflow-hidden"
       style={{
         shadowColor: "#000",

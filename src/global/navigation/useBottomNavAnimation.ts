@@ -31,10 +31,10 @@ export default function useBottomNavAnimation(
   useEffect(() => {
     const animations = TAB_CONFIG.map((tab) =>
       Animated.spring(scaleByTabRef.current![tab.id], {
-        toValue: tab.id === activeTab ? 1.06 : 1,
+        toValue: tab.id === activeTab ? 1.02 : 1,
         useNativeDriver: true,
-        tension: 180,
-        friction: 14,
+        tension: 150,
+        friction: 18,
       })
     );
 

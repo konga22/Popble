@@ -1,14 +1,21 @@
 import React from "react";
 import { ImageBackground, TouchableOpacity, View } from "react-native";
+import { MOCK_IMAGES } from "../../../constants/mockImages";
 import Text from "../../ui/AppText";
 
-const IMG_MAP_BANNER =
-  "https://www.figma.com/api/mcp/asset/fd6688f9-0367-4998-8e08-ffbd5caaa980";
+const IMG_MAP_BANNER = MOCK_IMAGES.mapBanner;
 
-export default function HomeBannerSection() {
+type HomeBannerSectionProps = {
+  onPress: () => void;
+};
+
+export default function HomeBannerSection({ onPress }: HomeBannerSectionProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.9}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel="내 근처 팝업 지도 열기"
       className="rounded-[32px] overflow-hidden h-44 shadow-lg bg-primary"
     >
       <ImageBackground

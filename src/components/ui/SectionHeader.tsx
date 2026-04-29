@@ -19,7 +19,15 @@ export default function SectionHeader({
         {title}
       </Text>
       {actionLabel ? (
-        <TouchableOpacity activeOpacity={0.85} onPress={onActionPress}>
+        <TouchableOpacity
+          activeOpacity={0.85}
+          onPress={onActionPress}
+          disabled={!onActionPress}
+          accessibilityRole="button"
+          accessibilityLabel={`${title} ${actionLabel}`}
+          accessibilityState={{ disabled: !onActionPress }}
+          className="min-h-11 justify-center"
+        >
           <Text className="text-primary text-[13px] font-medium tracking-tight">
             {actionLabel}
           </Text>

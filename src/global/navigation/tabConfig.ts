@@ -10,6 +10,7 @@ export type TabConfigItem = {
   icon: IoniconName;
   activeIcon: IoniconName;
   label: string;
+  iconOffsetX?: number;
 };
 
 export const TAB_CONFIG: TabConfigItem[] = [
@@ -30,6 +31,7 @@ export const TAB_CONFIG: TabConfigItem[] = [
     icon: "chatbubble-ellipses-outline",
     activeIcon: "chatbubble-ellipses",
     label: "커뮤니티",
+    iconOffsetX: 1,
   },
   {
     id: "saved",

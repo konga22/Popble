@@ -1,277 +1,237 @@
 # Popble 아키텍처
 
-## 디렉토리 구조 (전체)
+Popble은 Expo SDK 54, React Native 0.81, TypeScript strict, NativeWind v4 기반 모바일 앱이다. 현재 Expo Router가 도입되어 `app/` route 파일이 진입점을 맡고, 실제 화면 UI는 `src/screens/`와 `src/components/`에 유지한다.
 
-```
+---
+
+## 디렉토리 구조
+
+```txt
 Popble/
-├── docs/
-│   ├── design-system.md
-│   ├── architecture.md
-│   ├── conventions.md
-│   ├── screens.md
-│   └── global-features.md      # 전역 기능 레지스트리
+├── app/
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   ├── search.tsx
+│   ├── popups/
+│   │   ├── [id].tsx
+│   │   ├── submit.tsx
+│   │   └── section/
+│   │       └── [section].tsx
+│   ├── map.tsx
+│   ├── community.tsx
+│   ├── community-feed.tsx
+│   ├── review.tsx
+│   ├── partner.tsx
+│   ├── saved.tsx
+│   └── profile.tsx
 │
 ├── src/
-│   ├── screens/              # 화면 컴포넌트 (1파일 = 1화면)
-│   │   ├── HomeScreen.tsx    ✅ 완료
+│   ├── screens/
+│   │   ├── HomeScreen.tsx
+│   │   ├── HomeSearchScreen.tsx
+│   │   ├── HomeSearchScreen.tsx
+│   │   ├── PopupCollectionScreen.tsx
+│   │   ├── PopupDetailScreen.tsx
+│   │   ├── PopupSubmissionScreen.tsx
 │   │   ├── MapScreen.tsx
+│   │   ├── CommunityMainScreen.tsx
 │   │   ├── CommunityScreen.tsx
 │   │   ├── ReviewScreen.tsx
 │   │   ├── PartnerScreen.tsx
-│   │   ├── ReviewArchiveScreen.tsx
-│   │   └── CommunityMainScreen.tsx
+│   │   ├── SavedScreen.tsx
+│   │   └── ProfileScreen.tsx
 │   │
-│   ├── components/           # 재사용 컴포넌트
-│   │   ├── common/           # 앱 전반 공통
-│   │   │   ├── TopAppBar.tsx
-│   │   │   ├── BottomNavBar.tsx
-│   │   │   └── FAB.tsx
-│   │   ├── navigation/       # 하단 네비게이션/탭 아이템/인디케이터
-│   │   │   ├── BottomNavBar.tsx
-│   │   │   ├── BottomNavItem.tsx
-│   │   │   └── BottomNavIndicator.tsx
-│   │   ├── cards/            # 카드 컴포넌트
-│   │   │   ├── TrendingCard.tsx
-│   │   │   ├── ComingSoonCard.tsx
-│   │   │   ├── ClosingItem.tsx
-│   │   │   ├── MateCard.tsx
-│   │   │   ├── ReviewCard.tsx
-│   │   │   └── PartnerCard.tsx
-│   │   ├── sections/         # 화면 섹션 단위 위젯
-│   │   │   ├── HomeSearchSection.tsx
-│   │   │   ├── TrendingSection.tsx
-│   │   │   └── ReviewOverviewSection.tsx
-│   │   └── ui/               # 기본 UI 요소
-│   │       ├── Chip.tsx
-│   │       ├── Badge.tsx
-│   │       └── SearchBar.tsx
-│   │
-│   ├── global/
+│   ├── components/
+│   │   ├── cards/
+│   │   ├── common/
 │   │   ├── navigation/
-│   │   │   ├── tabConfig.ts
-│   │   │   └── useBottomNavAnimation.ts
-│   │   ├── app/
-│   │   │   └── appShell.ts
-│   │   └── registry/
-│   │       └── featureRegistry.ts
+│   │   ├── sections/
+│   │   └── ui/
 │   │
 │   ├── constants/
-│   │   ├── colors.ts         # 색상 상수 (tailwind 토큰과 동기화)
-│   │   └── layout.ts         # 고정 크기 상수
+│   │   ├── colors.ts
+│   │   ├── layout.ts
+│   │   └── mockImages.ts
 │   │
-│   ├── types/
-│   │   └── index.ts          # 공통 타입 정의
+│   ├── features/
+│   │   └── home/
+│   │       ├── HomeFeatureContext.tsx
+│   │       └── homeData.ts
 │   │
-│   └── navigation/           # (Expo Router 도입 후)
-│       └── index.tsx
+│   └── global/
+│       ├── navigation/
+│       │   ├── NavigationContext.tsx
+│       │   ├── appRoutes.ts
+│       │   ├── tabConfig.ts
+│       │   └── useBottomNavAnimation.ts
+│       └── registry/
+│           └── featureRegistry.ts
 │
 ├── assets/
-│   ├── fonts/                # 커스텀 폰트
-│   ├── icons/                # SVG 아이콘
-│   └── images/               # 로컬 이미지
-│
+│   └── fonts/
 ├── App.tsx
 ├── global.css
 ├── tailwind.config.js
 ├── metro.config.js
 ├── babel.config.js
-├── app.json
-└── tsconfig.json
+└── package.json
 ```
+
+---
+
+## Expo Router 구조
+
+`package.json`의 `main`은 `expo-router/entry`다. 앱의 실제 route 진입은 `app/` 아래 파일이 담당한다.
+
+| Route 파일 | 화면 | 연결 Screen |
+|------------|------|-------------|
+| `app/_layout.tsx` | 루트 레이아웃 | `NavigationRoot` |
+| `app/index.tsx` | 홈 | `HomeScreen` |
+| `app/search.tsx` | 홈 검색 | `HomeSearchScreen` |
+| `app/popups/[id].tsx` | 팝업 상세 | `PopupDetailScreen` |
+| `app/popups/section/[section].tsx` | 홈 섹션 전체보기 | `PopupCollectionScreen` |
+| `app/popups/submit.tsx` | 팝업 제보 | `PopupSubmissionScreen` |
+| `app/map.tsx` | 지도 | `MapScreen` |
+| `app/community.tsx` | 커뮤니티 메인 | `CommunityMainScreen` |
+| `app/community-feed.tsx` | 커뮤니티 피드 | `CommunityScreen` |
+| `app/review.tsx` | 리뷰 & 별점 | `ReviewScreen` |
+| `app/partner.tsx` | 팝업 파트너 | `PartnerScreen` |
+| `app/saved.tsx` | 저장 | `SavedScreen` |
+| `app/profile.tsx` | 마이 | `ProfileScreen` |
+
+각 route 파일은 `useAppScreenProps()`를 호출해 화면에 공통 navigation props를 전달한다. `app/_layout.tsx`는 `SafeAreaProvider`와 `NavigationRoot`를 감싼다.
+
+홈 신규 디자인은 정식 `HomeScreen`과 `HomeSearchScreen`에 반영되어 route에 연결되어 있다. 햄버거 메뉴도 정식 `SideMenu`를 전역 navigation shell에 연결한다.
+
+`App.tsx`는 기존 수동 라우팅 진입점으로 남아 있지만, 현재 패키지 진입점은 Expo Router다. 새 화면은 `app/` route 파일과 `src/screens/*Screen.tsx`를 함께 추가하는 방식으로 확장한다.
 
 ---
 
 ## 화면 컴포넌트 구조 패턴
 
-각 화면 파일은 다음 구조를 따른다:
+화면 파일은 조립 코드에 가깝게 유지한다.
 
 ```tsx
-// 1. imports
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
+import type { AppScreenProps } from "../global/navigation/appRoutes";
 
-// 2. 타입 정의
-type CardProps = { title: string; ... };
-
-// 3. 서브 컴포넌트 (화면 전용, 재사용 없는 것)
-function SectionHeader({ title }: { title: string }) { ... }
-function CardItem({ title }: CardProps) { ... }
-
-// 4. 화면 컴포넌트 (파일 맨 아래, export default)
-export default function HomeScreen() {
+export default function ExampleScreen({
+  activeTab,
+  onOpenMenu,
+  onNavigate,
+  onTabPress,
+}: AppScreenProps) {
   return (
     <View className="flex-1 bg-surface">
-      ...
+      {/* TopAppBar, sections, FAB, BottomNavBar */}
     </View>
   );
 }
 ```
 
-재사용 가능성이 있는 컴포넌트는 `src/components/`로 분리한다.
+원칙:
+
+- `src/screens/*Screen.tsx`: 화면 레이아웃 조립, 공통 navigation props 연결
+- `src/components/sections/`: 화면별 큰 섹션
+- `src/components/cards/`: 리스트/그리드 반복 카드
+- `src/components/ui/`: 텍스트, 로고, 수평 리스트 같은 작은 공통 UI
+- `src/components/navigation/`: 하단 네비게이션, 탭 아이템, 인디케이터, 사이드 메뉴
+- `src/global/navigation/`: route 매핑, tab config, navigation context, animation hook
+- `src/constants/`: 색상, 레이아웃, mock image constants
 
 ---
 
-## 위젯 / 파일 분리 원칙
+## 전역 내비게이션
 
-Popble은 화면 파일을 "조립", 위젯 파일을 "표현", global/hook 파일을 "행동"으로 분리한다.
+현재 내비게이션은 Expo Router와 `src/global/navigation/NavigationContext.tsx`가 함께 담당한다.
 
-- `src/screens/*Screen.tsx`: 화면 레이아웃 조립, 화면 진입 상태 연결, 섹션 배치만 담당
-- `src/components/sections/`: 화면의 큰 섹션 1개 단위로 분리
-- `src/components/cards/`: 리스트/그리드에서 반복되는 카드 단위로 분리
-- `src/components/ui/`: 칩, 배지, 검색창처럼 작은 공통 요소로 분리
-- `src/components/navigation/`: 하단 네비게이션처럼 앱 전반에서 반복되는 내비게이션 UI
-- `src/global/`: 전역 설정, 애니메이션 로직, 탭 설정, 앱 셸처럼 여러 화면이 공유하는 동작
+| 파일 | 책임 |
+|------|------|
+| `NavigationContext.tsx` | `Stack`, font loading, SideMenu, route 이동 함수, screen props provider |
+| `appRoutes.ts` | 앱 route 타입, href 매핑, 메뉴 항목, pathname 변환, active tab 계산 |
+| `tabConfig.ts` | 하단 탭 순서, 라벨, Ionicons 아이콘 |
+| `useBottomNavAnimation.ts` | 하단 nav indicator/아이템 애니메이션 계산 |
 
-다음 조건 중 하나라도 만족하면 파일을 분리한다.
+하단 탭:
 
-- 화면 파일이 150줄을 넘기기 시작할 때
-- 화면 내부 서브 컴포넌트가 3개 이상일 때
-- 애니메이션, 타이머, `useEffect`, 제스처 로직이 들어갈 때
-- 같은 UI가 2개 이상 화면에서 반복될 때
-- `map()`으로 반복되는 카드/아이템이 있을 때
-- mock data, 탭 설정, 필터 설정이 화면 파일 안에서 길어질 때
+```txt
+home | map | community | saved | profile
+```
 
-화면 파일의 목표는 "섹션 이름만 읽히는 조립 코드"를 유지하는 것이다.
+보조 route:
 
-예시:
+```txt
+community-feed | review | partner
+```
 
-- `HomeScreen.tsx`: `HomeSearchSection`, `MapBannerSection`, `TrendingSection`, `ComingSoonSection`만 조립
-- `TrendingSection.tsx`: 섹션 제목, 수평 스크롤, 카드 목록 연결 담당
-- `TrendingCard.tsx`: 카드 1장 렌더링만 담당
-- `useBottomNavAnimation.ts`: 하단 네비 애니메이션 값과 전환 로직 담당
+보조 route는 하단 탭에서 `community` active 상태로 매핑된다.
 
 ---
 
-## 레이아웃 패턴
+## 하단 네비게이션 구현
 
-### 기본 화면 레이아웃
+하단 네비게이션은 구현 완료된 전역 기능이다.
 
-```tsx
-<View className="flex-1 bg-surface">
-  <StatusBar ... />
-  <TopAppBar />                    {/* absolute, z-10 */}
+```txt
+src/components/navigation/
+├── BottomNavBar.tsx
+├── BottomNavIndicator.tsx
+└── BottomNavItem.tsx
 
-  <ScrollView
-    className="flex-1"
-    contentContainerStyle={{ paddingTop: 96, paddingBottom: 120, gap: 32 }}
-    showsVerticalScrollIndicator={false}
-  >
-    <View className="px-4 gap-8">
-      {/* 섹션들 */}
-    </View>
-  </ScrollView>
-
-  <FAB />                          {/* absolute bottom-24 right-4, z-20 */}
-  <BottomNavBar />                 {/* absolute bottom-0, z-10 */}
-</View>
-```
-
-### 수평 스크롤 섹션
-
-```tsx
-<ScrollView
-  horizontal
-  showsHorizontalScrollIndicator={false}
-  contentContainerStyle={{ gap: 16 }}
->
-  {items.map(item => <Card key={item.id} {...item} />)}
-</ScrollView>
-```
-
-### 섹션 헤더 패턴
-
-```tsx
-<View className="flex-row items-end justify-between">
-  <Text className="text-heading text-xl font-semibold tracking-tight">
-    섹션 제목
-  </Text>
-  <TouchableOpacity>
-    <Text className="text-primary text-xs">전체보기</Text>
-  </TouchableOpacity>
-</View>
-```
-
----
-
-## 하단 네비게이션 분리 기준
-
-하단 네비게이션은 단순 공통 컴포넌트가 아니라 앱 전역 인터랙션으로 취급한다.
-
-권장 구조:
-
-```tsx
-src/components/navigation/BottomNavBar.tsx
-src/components/navigation/BottomNavItem.tsx
-src/components/navigation/BottomNavIndicator.tsx
-src/global/navigation/tabConfig.ts
-src/global/navigation/useBottomNavAnimation.ts
+src/global/navigation/
+├── tabConfig.ts
+└── useBottomNavAnimation.ts
 ```
 
 규칙:
 
-- 화면은 `activeTab`, `onTabPress` 같은 최소 props만 전달한다
-- 탭 순서, 라벨, 아이콘은 `tabConfig.ts` 한 곳에서 관리한다
-- indicator 이동, show/hide, bounce, scale 같은 애니메이션 계산은 hook으로 분리한다
-- safe area, blur, shadow, floating layout은 `BottomNavBar.tsx`가 소유한다
-- 탭 아이템 렌더링은 `BottomNavItem.tsx`로 분리해 탭 추가/변경 시 영향 범위를 줄인다
+- 탭 순서, 라벨, 아이콘은 `TAB_CONFIG`에서 관리한다
+- 화면은 `activeTab`, `onTabPress`만 전달한다
+- indicator 이동과 탭 애니메이션은 `useBottomNavAnimation.ts`에서 관리한다
+- route와 탭 매핑은 `appRoutes.ts`에서 관리한다
 
 ---
 
-## 내비게이션 계획
+## 레이아웃 상수
 
-현재: 단일 화면 (App.tsx → HomeScreen)
-목표: Expo Router 파일 기반 라우팅
+고정 레이아웃 값은 `src/constants/layout.ts`의 `APP_LAYOUT`에 둔다.
 
-```
-app/
-├── (tabs)/
-│   ├── index.tsx        ← 홈
-│   ├── map.tsx          ← 지도
-│   ├── community.tsx    ← 커뮤니티
-│   ├── saved.tsx        ← 저장
-│   └── profile.tsx      ← 마이
-├── popup/[id].tsx       ← 팝업 상세
-├── review/[id].tsx      ← 리뷰 상세
-└── _layout.tsx
-```
+| 키 | 값 | 용도 |
+|----|----|------|
+| `topAppBarHeight` | `64` | 상단 바 높이 |
+| `bottomNavBottomPadding` | `24` | 하단 safe area 여백 |
+| `fabSize` | `56` | FAB 크기 |
+| `screenHorizontalPadding` | `16` | 기본 화면 좌우 패딩 |
+| `sectionGap` | `32` | 섹션 간격 |
 
-Expo Router 도입 시 `src/screens/` 파일들을 `app/` 으로 이동.
+새 화면에서 같은 값을 반복해야 하면 임의 숫자보다 `APP_LAYOUT`을 우선한다.
 
 ---
 
-## 글로벌 기능 관리
+## Mock 이미지
 
-글로벌 기능은 `src/global/`와 `docs/global-features.md`에서 함께 관리한다.
+Figma MCP asset URL은 만료될 수 있으므로 화면 코드에서 직접 사용하지 않는다. 현재 mock/static 화면 이미지는 `src/constants/mockImages.ts`의 `MOCK_IMAGES`를 사용한다.
 
-글로벌 기능으로 분류하는 기준:
-
-- 2개 이상 화면에서 공유되는 상태/동작
-- 앱 루트에서 초기화되거나 종료될 때 정리해야 하는 기능
-- 탭/라우팅/오버레이/토스트/인증/테마/트래킹처럼 앱 전반에 영향을 주는 기능
-- 한 화면의 수정이 다른 화면 동작을 바꿀 수 있는 기능
-
-운영 규칙:
-
-- 기능마다 진입 파일(entry) 1개를 둔다
-- 화면은 global 내부 구현 파일을 직접 참조하지 않고 entry만 import 한다
-- 기능 추가/수정 시 `docs/global-features.md` 레지스트리를 함께 업데이트한다
-- 전역 설정값은 화면 파일 안에 하드코딩하지 않고 `src/global/` 또는 `src/constants/`에 둔다
+향후 운영 에셋 적용 시에도 화면 파일에 URL을 흩뿌리지 말고, 로컬 `assets/` 또는 CDN 상수 계층으로 교체한다.
 
 ---
 
 ## 상태 관리 계획
 
-| 상태 종류 | 관리 방식 |
+| 상태 종류 | 현재/계획 |
 |-----------|-----------|
-| UI 상태 (탭 선택 등) | `useState` |
-| 서버 데이터 | React Query (추후 도입) |
-| 전역 상태 (인증 등) | Zustand (추후 도입) |
-| 폼 | React Hook Form (추후 도입) |
+| 라우팅/탭 상태 | Expo Router + `NavigationContext` |
+| 사이드 메뉴 표시 | `NavigationContext` 내부 `useState` |
+| 서버 데이터 | 추후 React Query 검토 |
+| 전역 상태 | 인증/사용자 상태 도입 시 Zustand 등 검토 |
+| 폼 | 작성/필터 폼 도입 시 React Hook Form 검토 |
 
 ---
 
 ## 의존성 정책
 
-- 패키지 추가 전 반드시 Expo SDK 54 호환성 확인
-- `expo install` 우선 사용 (Expo가 관리하는 버전 자동 선택)
-- peer dependency 충돌 시 `--legacy-peer-deps` 대신 원인 파악 후 해결
+- 패키지 추가 전 Expo SDK 54 호환성을 확인한다
+- Expo 관리 패키지는 `npx expo install`을 우선한다
+- peer dependency 충돌은 `--legacy-peer-deps`로 덮기보다 원인을 먼저 확인한다
+- TypeScript 확인은 `npm run typecheck` 또는 `npm run check`를 사용한다

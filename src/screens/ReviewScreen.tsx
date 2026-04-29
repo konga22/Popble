@@ -8,23 +8,20 @@ import ReviewRatingOverviewSection from "../components/sections/review/ReviewRat
 import ReviewPostCard, {
   type ReviewPostCardProps,
 } from "../components/cards/review/ReviewPostCard";
+import { COLORS } from "../constants/colors";
+import { MOCK_IMAGES } from "../constants/mockImages";
 import type { AppScreenProps } from "../global/navigation/appRoutes";
 
-const IMG_PROFILE1 =
-  "https://www.figma.com/api/mcp/asset/0edb0de7-cd3b-4e95-bcf4-63ce98b9f710";
-const IMG_REVIEW_MAIN =
-  "https://www.figma.com/api/mcp/asset/baa9bd5c-950f-454b-81bc-14ba7b793f14";
-const IMG_PROFILE2 =
-  "https://www.figma.com/api/mcp/asset/aad1d852-5c62-4e41-82be-f3adbae89181";
-const IMG_REVIEW1 =
-  "https://www.figma.com/api/mcp/asset/967fdba4-63c0-4e0f-b5e6-a57373f818b3";
-const IMG_REVIEW2 =
-  "https://www.figma.com/api/mcp/asset/f3119236-d982-4b53-8274-92700df14532";
+const IMG_PROFILE1 = MOCK_IMAGES.reviewProfileA;
+const IMG_REVIEW_MAIN = MOCK_IMAGES.reviewMain;
+const IMG_PROFILE2 = MOCK_IMAGES.reviewProfileB;
+const IMG_REVIEW1 = MOCK_IMAGES.reviewDessert;
+const IMG_REVIEW2 = MOCK_IMAGES.reviewSpace;
 
 const REVIEW_ITEMS: ReviewPostCardProps[] = [
   {
     avatar: IMG_PROFILE1,
-    avatarBg: "#f9b4e1",
+    avatarBg: COLORS.accentPink,
     username: "@blooming_day",
     date: "2023.11.24",
     rating: 5,
@@ -38,7 +35,7 @@ const REVIEW_ITEMS: ReviewPostCardProps[] = [
   },
   {
     avatar: IMG_PROFILE2,
-    avatarBg: "#e1c8f8",
+    avatarBg: COLORS.lavender,
     username: "@lavender_dreamer",
     date: "2023.11.22",
     rating: 4.5,
@@ -66,6 +63,7 @@ export default function ReviewScreen({
         variant="title"
         title="리뷰 & 별점"
         rightIcon="star-outline"
+        rightAccessibilityLabel="리뷰 평점 보기"
         onLeftPress={onOpenMenu}
       />
 
@@ -86,7 +84,7 @@ export default function ReviewScreen({
         </View>
       </ScrollView>
 
-      <FAB icon="✍️" bottom={96} />
+      <FAB icon="✍️" bottom={96} accessibilityLabel="리뷰 작성" />
       <BottomNavBar activeTab={activeTab} onTabPress={onTabPress} />
     </View>
   );

@@ -9,13 +9,14 @@ import CommunityFeedSection from "../components/sections/community/CommunityFeed
 import type { MateCardProps } from "../components/cards/community/MateCard";
 import type { ExchangeItemProps } from "../components/cards/community/ExchangeItem";
 import type { TipFeedCardProps } from "../components/cards/community/TipFeedCard";
+import { COLORS } from "../constants/colors";
+import { MOCK_IMAGES } from "../constants/mockImages";
 import type { AppScreenProps } from "../global/navigation/appRoutes";
 
 const recruitItems: MateCardProps[] = [
   {
-    avatar:
-      "https://www.figma.com/api/mcp/asset/373b69f5-28d7-4868-9ed2-9f05006d1247",
-    avatarBg: "#e1c8f8",
+    avatar: MOCK_IMAGES.communityProfileA,
+    avatarBg: COLORS.lavender,
     name: "민지",
     location: "성수동 • 10분 전",
     status: "모집중",
@@ -23,9 +24,8 @@ const recruitItems: MateCardProps[] = [
     tags: ["#사진촬영", "#커피수다"],
   },
   {
-    avatar:
-      "https://www.figma.com/api/mcp/asset/0bce280c-eaac-4f60-bd1f-12148213636c",
-    avatarBg: "#f9b4e1",
+    avatar: MOCK_IMAGES.communityProfileB,
+    avatarBg: COLORS.accentPink,
     name: "소희",
     location: "더현대 • 1시간 전",
     status: "모집중",
@@ -36,15 +36,13 @@ const recruitItems: MateCardProps[] = [
 
 const exchangeItems: ExchangeItemProps[] = [
   {
-    image:
-      "https://www.figma.com/api/mcp/asset/3f4fe28c-7983-42c5-8d21-ad56290ec1ee",
+    image: MOCK_IMAGES.exchangeKeyring,
     label: "교환 희망",
     title: "한정판 라벤더 키링",
     time: "3분 전",
   },
   {
-    image:
-      "https://www.figma.com/api/mcp/asset/fc635ec2-53e3-43ed-be4b-9c0ea133c505",
+    image: MOCK_IMAGES.exchangeMug,
     label: "교환 희망",
     title: "글라스 머그컵 세트",
     time: "12분 전",
@@ -53,7 +51,7 @@ const exchangeItems: ExchangeItemProps[] = [
 
 const feedItems: TipFeedCardProps[] = [
   {
-    accentColor: "#844d74",
+    accentColor: COLORS.primary,
     categoryIcon: "⏱",
     category: "현재 대기 2시간 이상",
     body:
@@ -62,7 +60,7 @@ const feedItems: TipFeedCardProps[] = [
     likes: 8,
   },
   {
-    accentColor: "#6b5780",
+    accentColor: COLORS.accentPlum,
     categoryIcon: "💡",
     category: "방문 꿀팁",
     body:
@@ -88,6 +86,7 @@ export default function CommunityScreen({
         variant="title"
         title="커뮤니티 피드"
         rightIcon="sparkles-outline"
+        rightAccessibilityLabel="커뮤니티 추천 보기"
         onLeftPress={onOpenMenu}
       />
 
@@ -101,7 +100,7 @@ export default function CommunityScreen({
         <CommunityFeedSection items={feedItems} />
       </ScrollView>
 
-      <FAB bottom={96} />
+      <FAB bottom={96} accessibilityLabel="커뮤니티 글 작성" />
       <BottomNavBar activeTab={activeTab} onTabPress={onTabPress} />
     </View>
   );

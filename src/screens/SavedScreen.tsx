@@ -5,6 +5,7 @@ import TopAppBar from "../components/common/TopAppBar";
 import BottomNavBar from "../components/common/BottomNavBar";
 import Text from "../components/ui/AppText";
 import type { AppScreenProps } from "../global/navigation/appRoutes";
+import { COLORS } from "../constants/colors";
 
 const SAVED_POPUPS = [
   {
@@ -43,6 +44,7 @@ export default function SavedScreen({
         variant="title"
         title="저장한 팝업"
         rightIcon="search-outline"
+        rightAccessibilityLabel="저장한 팝업 검색"
         onLeftPress={onOpenMenu}
       />
 
@@ -71,11 +73,13 @@ export default function SavedScreen({
               <TouchableOpacity
                 key={item.title}
                 activeOpacity={0.85}
+                accessibilityRole="button"
+                accessibilityLabel={`${item.title}, ${item.subtitle}`}
                 className={`rounded-[28px] px-4 py-4 ${item.tone}`}
               >
                 <View className="flex-row items-center gap-3">
                   <View className="h-11 w-11 items-center justify-center rounded-full bg-white">
-                    <Ionicons name={item.icon} size={20} color="#844d74" />
+                    <Ionicons name={item.icon} size={20} color={COLORS.primary} />
                   </View>
                   <View className="flex-1">
                     <Text className="text-[16px] font-semibold leading-6 text-heading">
@@ -88,7 +92,7 @@ export default function SavedScreen({
                   <Ionicons
                     name="chevron-forward-outline"
                     size={20}
-                    color="#844d74"
+                    color={COLORS.primary}
                   />
                 </View>
               </TouchableOpacity>

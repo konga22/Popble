@@ -23,6 +23,7 @@ export default function MapScreen({
       <TopAppBar
         variant="logo"
         rightIcon="search-outline"
+        rightAccessibilityLabel="지도에서 팝업 검색"
         onLeftPress={onOpenMenu}
       />
       <MapSceneSection activeChip={activeChip} onSelectChip={setActiveChip} />

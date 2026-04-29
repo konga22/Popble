@@ -22,6 +22,7 @@ export default function PartnerScreen({
         variant="title"
         title="팝업 파트너 구하기"
         rightIcon="options-outline"
+        rightAccessibilityLabel="파트너 필터 열기"
         onLeftPress={onOpenMenu}
       />
 
@@ -33,7 +34,7 @@ export default function PartnerScreen({
         <PartnerRecruitmentSection />
       </ScrollView>
 
-      <FAB icon="✍️" bottom={96} />
+      <FAB icon="✍️" bottom={96} accessibilityLabel="파트너 모집글 작성" />
       <BottomNavBar activeTab={activeTab} onTabPress={onTabPress} />
     </View>
   );

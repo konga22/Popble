@@ -25,7 +25,10 @@ export default function MapFilterChips({ active, onSelect }: Props) {
               key={chip}
               onPress={() => onSelect(chip)}
               activeOpacity={0.85}
-              className={`px-6 py-2.5 rounded-full ${
+              accessibilityRole="button"
+              accessibilityLabel={`${chip} 지도 필터`}
+              accessibilityState={{ selected: isActive }}
+              className={`min-h-11 justify-center px-6 py-2.5 rounded-full ${
                 isActive ? "bg-primary" : "bg-white/80"
               }`}
             >

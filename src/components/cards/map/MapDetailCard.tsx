@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import Text from "../../ui/AppText";
+import { COLORS } from "../../../constants/colors";
 
 type Props = {
   imageUri: string;
@@ -23,7 +24,7 @@ export default function MapDetailCard({
         className="bg-white/95 rounded-[32px] p-5 gap-4"
         style={{
           shadowColor: "rgba(132,77,116,0.12)",
-          shadowOffset: { width: 0, height: 20 },
+          shadowOffset: { width: 0, height: 8 * 2.5 },
           shadowOpacity: 1,
           shadowRadius: 50,
           elevation: 10,
@@ -31,7 +32,7 @@ export default function MapDetailCard({
       >
         <View
           className="absolute w-24 h-24 rounded-full -top-10 -right-10 opacity-20"
-          style={{ backgroundColor: "#f9b4e1" }}
+          style={{ backgroundColor: COLORS.accentPink }}
         />
 
         <View className="flex-row gap-4">
@@ -64,8 +65,10 @@ export default function MapDetailCard({
         <View className="flex-row gap-2">
           <TouchableOpacity
             className="flex-1 flex-row items-center justify-center gap-2 py-3.5 rounded-full"
-            style={{ backgroundColor: "#844d74" }}
+            style={{ backgroundColor: COLORS.primary }}
             activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel={`${title.replace(/\n/g, " ")} 길찾기 및 상세정보 보기`}
           >
             <Text className="text-white text-sm">🗺</Text>
             <Text className="text-white text-sm">길찾기 및 상세정보</Text>
@@ -73,6 +76,8 @@ export default function MapDetailCard({
           <TouchableOpacity
             className="w-12 h-12 bg-muted-subtle rounded-full items-center justify-center"
             activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel={`${title.replace(/\n/g, " ")} 공유하기`}
           >
             <Text className="text-base">↗</Text>
           </TouchableOpacity>

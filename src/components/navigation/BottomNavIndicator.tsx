@@ -14,7 +14,7 @@ export default function BottomNavIndicator({
 
   return (
     <View
-      className="absolute inset-x-0 inset-y-[2px] rounded-full bg-[rgba(181,150,244,0.14)]"
+      className="absolute h-[52px] w-[88px] rounded-[26px] bg-[rgba(255,216,238,0.78)]"
       pointerEvents="none"
     />
   );

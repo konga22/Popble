@@ -1,6 +1,9 @@
 import React from "react";
 import { View } from "react-native";
 import Text from "../../ui/AppText";
+import { COLORS } from "../../../constants/colors";
+
+const STAR_STEPS = [1, 2, 3, 4, 5] as const;
 
 type StarsProps = {
   rating: number;
@@ -10,12 +13,12 @@ type StarsProps = {
 function Stars({ rating, size = 14 }: StarsProps) {
   return (
     <View className="flex-row gap-0.5">
-      {[1, 2, 3, 4, 5].map((index) => (
+      {STAR_STEPS.map((step) => (
         <Text
-          key={index}
-          style={{ fontSize: size, color: "#844d74" }}
+          key={`star-${step}`}
+          style={{ fontSize: size, color: COLORS.primary }}
         >
-          {index <= Math.floor(rating) ? "★" : index - 0.5 <= rating ? "½" : "☆"}
+          {step <= Math.floor(rating) ? "★" : step - 0.5 <= rating ? "½" : "☆"}
         </Text>
       ))}
     </View>
@@ -57,10 +60,10 @@ export default function ReviewRatingOverviewSection() {
       <View className="gap-2">
         <View className="flex-row gap-2 justify-center">
           <View className="bg-primary-light rounded-full px-4 py-2">
-            <Text className="text-[#624b59] text-xs">{filterTags[0]}</Text>
+            <Text className="text-primary-dark text-xs">{filterTags[0]}</Text>
           </View>
           <View className="bg-lavender rounded-full px-4 py-2">
-            <Text className="text-[#533f66] text-xs">{filterTags[1]}</Text>
+            <Text className="text-lavender-dark text-xs">{filterTags[1]}</Text>
           </View>
         </View>
         <View className="flex-row gap-2 justify-center">

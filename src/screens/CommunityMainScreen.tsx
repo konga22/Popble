@@ -6,15 +6,16 @@ import FAB from "../components/common/FAB";
 import CommunityMainHeroSection from "../components/sections/community/CommunityMainHeroSection";
 import CommunityTrendingFeedSection from "../components/sections/community/CommunityTrendingFeedSection";
 import type { TrendingPostCardProps } from "../components/cards/community/TrendingPostCard";
+import { COLORS } from "../constants/colors";
+import { MOCK_IMAGES } from "../constants/mockImages";
 import type { AppScreenProps } from "../global/navigation/appRoutes";
 
 const trendingItems: TrendingPostCardProps[] = [
   {
     rank: 1,
-    image:
-      "https://www.figma.com/api/mcp/asset/ce4414e0-0000-0000-0000-000000000000",
+    image: MOCK_IMAGES.trendingPostA,
     category: "방문 후기",
-    categoryColor: "#844d74",
+    categoryColor: COLORS.primary,
     title: "성수 디올 팝업 웨이팅 꿀팁 총정리 🌸",
     body:
       "오전 10시 전에 도착하면 대기 없이 바로 입장 가능해요! 2층 포토존이 진짜 사진 맛집입니다. 직원분들도 너무 친절하셔서 기분 좋게 즐겼어요.",
@@ -24,10 +25,9 @@ const trendingItems: TrendingPostCardProps[] = [
   },
   {
     rank: 2,
-    image:
-      "https://www.figma.com/api/mcp/asset/5a4d628c-0000-0000-0000-000000000000",
+    image: MOCK_IMAGES.trendingPostB,
     category: "정보공유",
-    categoryColor: "#6b5780",
+    categoryColor: COLORS.accentPlum,
     title: "이번 주 팝업 일정 총정리 (11/25~11/30)",
     body:
       "이번 주에 열리는 팝업들 한눈에 정리해봤어요. 오브제 마켓, 더현대 한정 컬래버, 청담 뷰티 팝업까지!",
@@ -38,10 +38,9 @@ const trendingItems: TrendingPostCardProps[] = [
   },
   {
     rank: 3,
-    image:
-      "https://www.figma.com/api/mcp/asset/5e9b5888-0000-0000-0000-000000000000",
+    image: MOCK_IMAGES.trendingPostC,
     category: "파트너 모집",
-    categoryColor: "#a8364b",
+    categoryColor: COLORS.urgent,
     title: "라벤더 팝업 같이 가실 분 구해요 💜",
     body:
       "이번 주 일요일 오후 2시에 라벤더 팝업 갈 예정인데 동행 구해요. 사진 좋아하시는 분 환영합니다!",
@@ -63,7 +62,10 @@ export default function CommunityMainScreen({
         backgroundColor="transparent"
         translucent
       />
-      <TopAppBar onLeftPress={onOpenMenu} />
+      <TopAppBar
+        onLeftPress={onOpenMenu}
+        rightAccessibilityLabel="커뮤니티 알림 보기"
+      />
 
       <ScrollView
         className="flex-1"
@@ -76,7 +78,7 @@ export default function CommunityMainScreen({
         </View>
       </ScrollView>
 
-      <FAB icon="✍️" bottom={96} />
+      <FAB icon="✍️" bottom={96} accessibilityLabel="커뮤니티 글 작성" />
       <BottomNavBar activeTab={activeTab} onTabPress={onTabPress} />
     </View>
   );

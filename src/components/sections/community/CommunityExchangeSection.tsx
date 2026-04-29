@@ -9,7 +9,7 @@ type Props = {
 
 export default function CommunityExchangeSection({ items }: Props) {
   return (
-    <View className="mx-4 rounded-[32px] p-5 gap-6" style={{ backgroundColor: "#f6f2f8" }}>
+    <View className="mx-4 rounded-[32px] bg-surface-secondary p-5 gap-6">
       <View className="gap-1">
         <View className="self-start bg-lavender rounded-full px-3 py-0.5">
           <Text className="text-lavender-dark text-[10px] font-bold tracking-widest uppercase">

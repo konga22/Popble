@@ -4,6 +4,8 @@ import { View } from "react-native";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import SideMenu from "./src/components/navigation/SideMenu";
+import { HomeFeatureProvider } from "./src/features/home/HomeFeatureContext";
+import type { HomeSectionKey } from "./src/features/home/homeData";
 import type { AppRoute } from "./src/global/navigation/appRoutes";
 import {
   getActiveTab,
@@ -18,10 +20,17 @@ import PartnerScreen from "./src/screens/PartnerScreen";
 import SavedScreen from "./src/screens/SavedScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 
+const legacyHomeActions = {
+  onOpenPopup: (_popupId: string) => undefined,
+  onOpenPopupSection: (_section: HomeSectionKey) => undefined,
+  onOpenSearch: (_query?: string) => undefined,
+  onOpenSubmission: () => undefined,
+};
+
 function renderScreen(route: AppRoute, props: AppScreenProps) {
   switch (route) {
     case "home":
-      return <HomeScreen {...props} />;
+      return <HomeScreen {...props} {...legacyHomeActions} />;
     case "map":
       return <MapScreen {...props} />;
     case "community":
@@ -37,7 +46,7 @@ function renderScreen(route: AppRoute, props: AppScreenProps) {
     case "profile":
       return <ProfileScreen {...props} />;
     default:
-      return <HomeScreen {...props} />;
+      return <HomeScreen {...props} {...legacyHomeActions} />;
   }
 }
 
@@ -54,6 +63,7 @@ export default function App() {
   const screenProps = useMemo<AppScreenProps>(
     () => ({
       activeTab,
+      tabTransitionDirection: "none",
       onOpenMenu: () => setMenuVisible(true),
       onNavigate: (nextRoute) => {
         setRoute(nextRoute);
@@ -73,15 +83,17 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <View className="flex-1 bg-surface">
-        {renderScreen(route, screenProps)}
-        <SideMenu
-          activeRoute={route}
-          onClose={() => setMenuVisible(false)}
-          onNavigate={(nextRoute) => setRoute(nextRoute)}
-          visible={menuVisible}
-        />
-      </View>
+      <HomeFeatureProvider>
+        <View className="flex-1 bg-surface">
+          {renderScreen(route, screenProps)}
+          <SideMenu
+            activeRoute={route}
+            onClose={() => setMenuVisible(false)}
+            onNavigate={(nextRoute) => setRoute(nextRoute)}
+            visible={menuVisible}
+          />
+        </View>
+      </HomeFeatureProvider>
     </SafeAreaProvider>
   );
 }

@@ -14,6 +14,8 @@ export default function MapRefreshButton() {
         elevation: 5,
       }}
       activeOpacity={0.85}
+      accessibilityRole="button"
+      accessibilityLabel="현재 지도 다시 검색"
     >
       <Text className="text-base">↻</Text>
     </TouchableOpacity>

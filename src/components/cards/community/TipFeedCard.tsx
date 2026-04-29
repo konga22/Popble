@@ -43,7 +43,7 @@ export default function TipFeedCard({
           {body}
         </Text>
         <View className="flex-row items-center gap-4">
-          <Text className="text-[#7c7a80] text-[11px]">{timestamp}</Text>
+          <Text className="text-body-muted text-[11px]">{timestamp}</Text>
           <View className="flex-row items-center gap-1">
             <Text className="text-[10px]">❤️</Text>
             <Text className="text-heading text-[11px] font-semibold">{likes}</Text>

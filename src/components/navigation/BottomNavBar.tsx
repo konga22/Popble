@@ -26,18 +26,18 @@ export default function BottomNavBar({
       className="absolute bottom-0 left-0 right-0 z-20"
       style={containerStyle}
     >
-      <SafeAreaView edges={["bottom"]}>
+      <SafeAreaView
+        edges={["bottom"]}
+        className="border-t border-chip-border bg-white"
+      >
         <View
-          className="flex-row items-center justify-between rounded-tl-[32px] rounded-tr-[32px] px-2 pb-3 pt-3"
+          className="flex-row items-center gap-1 px-2 pb-2 pt-2"
           style={{
-            backgroundColor: "rgba(255,255,255,0.98)",
-            borderTopWidth: 1,
-            borderTopColor: "rgba(15,23,42,0.06)",
-            shadowColor: "rgba(15,23,42,0.05)",
-            shadowOffset: { width: 0, height: -4 },
+            shadowColor: "rgba(16, 16, 20, 0.08)",
+            shadowOffset: { width: 0, height: -8 },
             shadowOpacity: 1,
-            shadowRadius: 24,
-            elevation: 10,
+            shadowRadius: 18,
+            elevation: 12,
           }}
         >
           {TAB_CONFIG.map((tab) => (

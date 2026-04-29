@@ -4,11 +4,10 @@ import MapDetailCard from "../../cards/map/MapDetailCard";
 import MapFilterChips from "./MapFilterChips";
 import MapPin from "../../cards/map/MapPin";
 import MapRefreshButton from "../../cards/map/MapRefreshButton";
+import { MOCK_IMAGES } from "../../../constants/mockImages";
 
-const IMG_MAP_BG =
-  "https://www.figma.com/api/mcp/asset/e7660ab7-413f-49aa-9afd-7d7bcec9a136";
-const IMG_DETAIL_THUMB =
-  "https://www.figma.com/api/mcp/asset/75a0e683-e6f5-4a4a-9356-826865624186";
+const IMG_MAP_BG = MOCK_IMAGES.mapScene;
+const IMG_DETAIL_THUMB = MOCK_IMAGES.mapDetail;
 
 type Props = {
   activeChip: string;

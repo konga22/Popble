@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import Text from "../../ui/AppText";
+import { COLORS } from "../../../constants/colors";
 
 type Props = {
   badge: string;
@@ -10,13 +11,13 @@ type Props = {
 };
 
 function getBadgeTextColor(badgeColor: string) {
-  if (badgeColor === "#fadaec") {
-    return "#844d74";
+  if (badgeColor === COLORS.primaryLight) {
+    return COLORS.primary;
   }
-  if (badgeColor === "#e1c8f8") {
-    return "#6b5780";
+  if (badgeColor === COLORS.lavender) {
+    return COLORS.accentPlum;
   }
-  return "#633055";
+  return COLORS.primaryDark;
 }
 
 export default function CommunitySectionHeader({ badge, badgeColor, title, action }: Props) {
@@ -34,7 +35,12 @@ export default function CommunitySectionHeader({ badge, badgeColor, title, actio
         <Text className="text-heading text-2xl font-semibold tracking-tight">{title}</Text>
       </View>
       {action ? (
-        <TouchableOpacity activeOpacity={0.85}>
+        <TouchableOpacity
+          activeOpacity={0.85}
+          accessibilityRole="button"
+          accessibilityLabel={`${title} ${action}`}
+          className="min-h-11 justify-center"
+        >
           <Text className="text-primary text-sm">{action}</Text>
         </TouchableOpacity>
       ) : null}

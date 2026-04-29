@@ -1,6 +1,7 @@
 import React from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import Text from "../../ui/AppText";
+import { COLORS } from "../../../constants/colors";
 
 const FILTER_CHIPS = ["전체", "이번 주", "성수동", "홍대", "혼자 못 가요", "사진 필수"];
 
@@ -24,7 +25,10 @@ export default function PartnerFilterChipBar({ active, onSelect }: Props) {
             key={chip}
             onPress={() => onSelect(chip)}
             activeOpacity={0.85}
-            className={`px-5 py-2.5 rounded-full ${
+            accessibilityRole="button"
+            accessibilityLabel={`${chip} 파트너 필터`}
+            accessibilityState={{ selected: isActive }}
+            className={`min-h-11 justify-center px-5 py-2.5 rounded-full ${
               isActive ? "bg-primary" : "bg-white"
             }`}
             style={
@@ -32,7 +36,7 @@ export default function PartnerFilterChipBar({ active, onSelect }: Props) {
                 ? undefined
                 : {
                     borderWidth: 1,
-                    borderColor: "rgba(132,77,116,0.15)",
+                    borderColor: `${COLORS.primary}26`,
                   }
             }
           >

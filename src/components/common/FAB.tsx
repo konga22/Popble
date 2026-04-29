@@ -1,12 +1,14 @@
 import React from "react";
 import { TouchableOpacity, Animated } from "react-native";
 import Text from "../ui/AppText";
+import { COLORS } from "../../constants/colors";
 
 type Props = {
   onPress?: () => void;
   icon?: string;
   bottom?: number;
   right?: number;
+  accessibilityLabel?: string;
   /** 애니메이션 연결용 */
   scale?: Animated.Value;
 };
@@ -21,6 +23,7 @@ export default function FAB({
   icon = "+",
   bottom = 96,
   right = 16,
+  accessibilityLabel = "새 글 작성",
   scale,
 }: Props) {
   const animStyle = scale ? { transform: [{ scale }] } : undefined;
@@ -33,10 +36,12 @@ export default function FAB({
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.85}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
         className="w-14 h-14 rounded-full items-center justify-center"
         style={{
-          backgroundColor: "#844d74",
-          shadowColor: "rgba(132,77,116,0.25)",
+          backgroundColor: COLORS.primary,
+          shadowColor: COLORS.primaryShadow,
           shadowOffset: { width: 0, height: 8 },
           shadowOpacity: 1,
           shadowRadius: 30,

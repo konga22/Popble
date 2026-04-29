@@ -2,6 +2,7 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 import CommunitySectionHeader from "./CommunitySectionHeader";
 import MateCard, { type MateCardProps } from "../../cards/community/MateCard";
+import { COLORS } from "../../../constants/colors";
 
 type Props = {
   items: MateCardProps[];
@@ -13,7 +14,7 @@ export default function CommunityRecruitSection({ items }: Props) {
       <View className="px-4">
         <CommunitySectionHeader
           badge="Recruit"
-          badgeColor="#fadaec"
+          badgeColor={COLORS.primaryLight}
           title="팝업 파트너 구하기"
           action="전체보기"
         />
