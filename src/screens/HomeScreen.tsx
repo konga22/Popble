@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Animated,
+  Easing,
   Image,
   ImageBackground,
   RefreshControl,
@@ -37,6 +39,12 @@ type HomeHeaderProps = {
 
 type HomePullBackdropProps = {
   image: string;
+};
+
+type HomeRefreshIndicatorProps = {
+  pullY: Animated.Value;
+  refreshing: boolean;
+  spin: Animated.Value;
 };
 
 type ActionStatProps = {
@@ -90,6 +98,59 @@ type ClosingDigestProps = {
 
 const HOME_BOTTOM_NAV_OFFSET = 0;
 const HOME_REFRESH_DURATION_MS = 700;
+
+function HomeRefreshIndicator({
+  pullY,
+  refreshing,
+  spin,
+}: HomeRefreshIndicatorProps) {
+  const pullOpacity = pullY.interpolate({
+    inputRange: [-110, -34, 0],
+    outputRange: [1, 0.62, 0],
+    extrapolate: "clamp",
+  });
+  const pullTranslateY = pullY.interpolate({
+    inputRange: [-130, -64, 0],
+    outputRange: [74, 36, -8],
+    extrapolate: "clamp",
+  });
+  const pullRotate = pullY.interpolate({
+    inputRange: [-130, 0],
+    outputRange: ["-360deg", "0deg"],
+    extrapolate: "clamp",
+  });
+  const spinRotate = spin.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"],
+  });
+
+  return (
+    <Animated.View
+      pointerEvents="none"
+      className="absolute left-0 right-0 top-16 z-30 items-center"
+      style={{
+        opacity: refreshing ? 1 : pullOpacity,
+        transform: [
+          { translateY: refreshing ? 46 : pullTranslateY },
+          { rotate: refreshing ? spinRotate : pullRotate },
+        ],
+      }}
+    >
+      <View
+        className="h-12 w-12 items-center justify-center rounded-full border border-white/50 bg-white/95"
+        style={{
+          shadowColor: COLORS.primaryShadow,
+          shadowOffset: { width: 0, height: 8 },
+          shadowOpacity: 1,
+          shadowRadius: 18,
+          elevation: 10,
+        }}
+      >
+        <Ionicons name="refresh" size={23} color={COLORS.primary} />
+      </View>
+    </Animated.View>
+  );
+}
 
 function HomePullBackdrop({ image }: HomePullBackdropProps) {
   return (
@@ -638,7 +699,9 @@ export default function HomeScreen({
 }: HomeScreenProps) {
   const feed = useMemo(() => getHomeFeed(), []);
   const heroPopup = feed.trendingPopups[0];
+  const pullY = useRef(new Animated.Value(0)).current;
   const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const refreshSpin = useRef(new Animated.Value(0)).current;
   const [refreshing, setRefreshing] = useState(false);
   const {
     isPopupReminderEnabled,
@@ -659,6 +722,28 @@ export default function HomeScreen({
     []
   );
 
+  useEffect(() => {
+    if (!refreshing) {
+      refreshSpin.stopAnimation();
+      refreshSpin.setValue(0);
+      return undefined;
+    }
+
+    refreshSpin.setValue(0);
+    const spinAnimation = Animated.loop(
+      Animated.timing(refreshSpin, {
+        toValue: 1,
+        duration: 700,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+
+    spinAnimation.start();
+
+    return () => spinAnimation.stop();
+  }, [refreshSpin, refreshing]);
+
   const handleRefresh = useCallback(() => {
     if (refreshTimeoutRef.current) {
       clearTimeout(refreshTimeoutRef.current);
@@ -670,6 +755,14 @@ export default function HomeScreen({
       refreshTimeoutRef.current = null;
     }, HOME_REFRESH_DURATION_MS);
   }, []);
+
+  const handleHomeScroll = useMemo(
+    () =>
+      Animated.event([{ nativeEvent: { contentOffset: { y: pullY } } }], {
+        useNativeDriver: true,
+      }),
+    [pullY]
+  );
 
   const allHomePopups = useMemo(
     () => [
@@ -698,24 +791,31 @@ export default function HomeScreen({
   return (
     <View className="flex-1 bg-heading">
       <HomePullBackdrop image={heroPopup.image} />
+      <HomeRefreshIndicator
+        pullY={pullY}
+        refreshing={refreshing}
+        spin={refreshSpin}
+      />
       <StatusBar
         barStyle="light-content"
         backgroundColor="transparent"
         translucent
       />
 
-      <ScrollView
+      <Animated.ScrollView
         className="flex-1 bg-transparent"
         contentContainerStyle={{ paddingBottom: 132 }}
+        onScroll={handleHomeScroll}
         refreshControl={
           <RefreshControl
             colors={[COLORS.primary]}
             progressBackgroundColor={COLORS.surfaceStrong}
             refreshing={refreshing}
-            tintColor={COLORS.primary}
+            tintColor="transparent"
             onRefresh={handleRefresh}
           />
         }
+        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
       >
         <ImageBackground
@@ -802,7 +902,7 @@ export default function HomeScreen({
             onOpenSection={() => onOpenPopupSection("closingSoon")}
           />
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
 
       {isTabEventBubbleVisible ? null : (
         <TouchableOpacity
