@@ -1,0 +1,41 @@
+enum AppPage {
+  loading,
+  onboarding,
+  permissions,
+  login,
+  home,
+  search,
+  map,
+  community,
+  profile,
+  calendar,
+  popupDetail,
+  waiting,
+  waitingStatus,
+  inventory,
+  reviewWrite,
+  communityWrite,
+  profileDetail,
+}
+
+extension AppPageExtension on AppPage {
+  String get path => switch (this) {
+    AppPage.loading => '/',
+    AppPage.onboarding => '/onboarding',
+    AppPage.permissions => '/permissions',
+    AppPage.login => '/login',
+    AppPage.home => '/home',
+    AppPage.search => '/search',
+    AppPage.map => '/map',
+    AppPage.community => '/community',
+    AppPage.profile => '/profile',
+    AppPage.calendar => '/calendar',
+    AppPage.popupDetail => '/popups/:id',
+    AppPage.waiting => '/waiting',
+    AppPage.waitingStatus => '/waiting/status',
+    AppPage.inventory => '/inventory',
+    AppPage.reviewWrite => '/reviews/write',
+    AppPage.communityWrite => '/community/write',
+    AppPage.profileDetail => '/profile/:id',
+  };
+}

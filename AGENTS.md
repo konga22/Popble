@@ -1,86 +1,68 @@
-# 팝업메이트 — Codex 총괄 가이드
+# PopupMate — Flutter Guide
 
-## 프로젝트 개요
+## Project Overview
 
-**팝업메이트**는 한국의 팝업 스토어를 발견·탐색·공유하는 모바일 앱이다.
-피그마 파일: `C8fidVKmN9LrNnDkIVbLyu` (star_star_project)
-테마: 파스텔 퍼플 / 라벤더 드림
+PopupMate는 한국의 팝업 스토어를 발견, 탐색, 저장, 공유하는 모바일 앱이다.
+현재 구현은 Figma `C8fidVKmN9LrNnDkIVbLyu`, section `409:11104` 최종본을 기준으로 한 Flutter mock UI 리빌드다.
 
-## 기술 스택
+## Stack
 
-| 분류 | 기술 |
-|------|------|
-| 프레임워크 | Expo (SDK 54) + React Native 0.81 |
-| 언어 | TypeScript (strict) |
-| 스타일링 | NativeWind v4 (Tailwind CSS) |
-| 내비게이션 | Expo Router + 전역 NavigationContext |
-| 상태관리 | 홈 mock 상태는 HomeFeatureContext, 서버/인증 상태는 추후 결정 |
-| 플랫폼 | iOS / Android / Web |
+| Area | Tech |
+| --- | --- |
+| Framework | Flutter |
+| Language | Dart |
+| Routing | go_router |
+| Icons | lucide_icons_flutter |
+| Platforms | iOS / Android |
+| Backend | Mock services only for now |
 
-## 파일 구조
+## Structure
 
-```
-팝업메이트/
-├── app/                # Expo Router route 파일
-├── src/
-│   ├── screens/        # 화면 단위 컴포넌트 (1파일 = 1화면)
-│   ├── components/     # 재사용 컴포넌트
-│   ├── constants/      # 색상, 폰트, 스페이싱 상수
-│   ├── features/       # 기능 단위 데이터/상태
-│   └── global/         # 전역 네비게이션/레지스트리
-├── docs/
-│   ├── design-system.md   # 색상·타이포·스페이싱 토큰
-│   ├── architecture.md    # 파일 구조·패턴 상세
-│   ├── conventions.md     # 코딩 컨벤션
-│   └── screens.md         # 화면 목록 & 피그마 Node ID
-├── assets/
-├── App.tsx             # 진입점 (SafeAreaProvider + 화면)
-├── global.css          # Tailwind 진입점
-├── tailwind.config.js  # 디자인 토큰 정의
-├── metro.config.js     # withNativeWind 설정
-└── babel.config.js     # NativeWind 바벨 설정
+```text
+lib/
+  main.dart
+  app/
+    router/
+    theme/
+    extensions/
+  models/
+  services/
+  ui/
+    common/
+    pages/
 ```
 
-## 핵심 규칙 (반드시 준수)
+## Required Style
 
-### 스타일링
-- **모든 스타일은 NativeWind className으로** — StyleSheet 사용 금지
-- 색상은 반드시 `tailwind.config.js`의 토큰 사용 (`text-primary`, `bg-surface` 등)
-- 픽셀 고정값이 필요할 땐 `className="w-[64px]"` 형식 허용
-- `style={{}}` prop은 그라디언트·그림자처럼 NativeWind가 지원 안 되는 경우만 허용
+- Keep `main.dart` thin: `runApp(const AppRoot())` only.
+- Use `MaterialApp.router`, `GoRouter`, and enum route names.
+- Keep route paths in `AppPage`; do not hardcode paths in pages.
+- Use `goNamed` for root tab flow changes, `pushNamed` for detail/write/waiting flows, and `pop` for temporary flow exits.
+- Use `AppTheme` and `AppColors` instead of scattering color literals, except for local visual gradients/placeholders.
+- Use `lucide_icons_flutter` icons only.
+- Keep external/data behavior in `services/`; pages should consume mock services, not own global data.
+- Keep reusable UI in `ui/common/`.
+- Add controllers to `State`, dispose them, validate before mock service calls, and check `mounted` after `await`.
+- Use short, user-facing snackbar messages through `context.showSnackbar`.
 
-### 컴포넌트
-- 화면 컴포넌트는 `src/screens/` — 이름은 `XxxScreen.tsx`
-- 재사용 컴포넌트는 `src/components/` — 이름은 `XxxCard.tsx`, `XxxButton.tsx` 등
-- 화면 안 서브 컴포넌트는 같은 파일에 위에 선언, 화면 컴포넌트가 파일 맨 아래 `export default`
-- `any` 타입 사용 금지 — Props 인터페이스 반드시 정의
+## Design Direction
 
-### 이미지
-- 피그마 에셋 URL은 임시 (7일 만료) — 실제 에셋은 `assets/` 또는 CDN으로 교체 예정
-- `Image` 컴포넌트에 항상 `resizeMode` 명시
+- Visual design follows Figma first.
+- Figma `Curated` copy is replaced with `PopupMate`.
+- Current color base:
+  - background `#FCF8F9`
+  - ink `#393C43`
+  - nav surface `#F0EDED`
+  - border `#C6C6CB`
+- UI should feel mobile-first, restrained, and practical.
 
-### 네이티브 차이
-- `div` → `View`, `p`/`span` → `Text`, `img` → `Image`
-- `ScrollView`에 horizontal 스크롤 시 `showsHorizontalScrollIndicator={false}` 기본 적용
-- 터치는 `TouchableOpacity` (activeOpacity={0.85}) 사용
+## Verification
 
-## 현재 구현 상태
+Run before PR:
 
-| 화면 | 상태 | 피그마 Node |
-|------|------|-------------|
-| 홈 (메인) | ✅ 신규 디자인 채택 | 179:8 |
-| 홈 검색 | ✅ 구현 | - |
-| 팝업 상세/전체보기/제보 | ✅ 1차 구현 | - |
-| 지도 메인 | ✅ 구현 | 179:169 |
-| 커뮤니티 피드 | ✅ 구현 | 179:281 |
-| 리뷰 & 별점 | ✅ 구현 | 179:601 |
-| 팝업 파트너 | ✅ 구현 | 181:756 |
-| 리뷰 아카이브 | ✅ 리뷰 화면에 통합 구현 | 182:1122 |
-| 커뮤니티 메인 | ✅ 구현 | 182:1276 |
-
-## 참고 문서
-
-- [디자인 시스템](./docs/design-system.md)
-- [아키텍처](./docs/architecture.md)
-- [코딩 컨벤션](./docs/conventions.md)
-- [화면 목록](./docs/screens.md)
+```bash
+dart format lib test
+flutter analyze
+flutter test
+git diff --check
+```
