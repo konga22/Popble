@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../app/extensions/spacing_extension.dart';
+import '../../app/router/app_page.dart';
 import '../../app/router/app_tab.dart';
 import '../../app/theme/app_theme.dart';
 import '../../models/mock_models.dart';
@@ -31,7 +32,14 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
           showBack
               ? IconButton(
                 icon: const Icon(LucideIcons.arrowLeft),
-                onPressed: () => context.pop(),
+                onPressed: () {
+                  if (context.canPop()) {
+                    context.pop();
+                    return;
+                  }
+
+                  context.goNamed(AppPage.home.name);
+                },
               )
               : null,
       title: Text(title),
@@ -117,6 +125,135 @@ class AppBottomNavBar extends StatelessWidget {
                 );
               }).toList(),
         ),
+      ),
+    );
+  }
+}
+
+class FigmaBottomNavBar extends StatelessWidget {
+  const FigmaBottomNavBar({
+    super.key,
+    required this.activeTab,
+    this.raisedHome = false,
+    this.backgroundColor = AppColors.surfaceAlt,
+    this.topRadius = 12,
+  });
+
+  final AppTab activeTab;
+  final bool raisedHome;
+  final Color backgroundColor;
+  final double topRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
+
+    return Container(
+      height: 96 + bottomInset,
+      padding: EdgeInsets.only(bottom: bottomInset),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        border: const Border(top: BorderSide(color: AppColors.border)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(topRadius)),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0D000000),
+            blurRadius: 1,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Row(
+        children:
+            AppTab.values.map((tab) {
+              final isActive = tab == activeTab;
+              final useRaisedHome = raisedHome && tab == AppTab.home;
+
+              return Expanded(
+                child: InkWell(
+                  onTap: () {
+                    if (isActive) return;
+                    context.goNamed(tab.page.name);
+                  },
+                  child: SizedBox(
+                    height: 96,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (useRaisedHome) ...[
+                          Transform.translate(
+                            offset: const Offset(0, -14),
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: AppColors.ink,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: AppColors.background,
+                                  width: 4,
+                                ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x1A000000),
+                                    blurRadius: 15,
+                                    offset: Offset(0, 10),
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                tab.icon,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                          Transform.translate(
+                            offset: const Offset(0, -11),
+                            child: _BottomNavLabel(tab: tab, active: true),
+                          ),
+                        ] else ...[
+                          Icon(
+                            tab.icon,
+                            size: tab == AppTab.community ? 20 : 18,
+                            color:
+                                isActive
+                                    ? AppColors.ink
+                                    : const Color(0xFF616365),
+                          ),
+                          4.heightBox,
+                          _BottomNavLabel(tab: tab, active: isActive),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+      ),
+    );
+  }
+}
+
+class _BottomNavLabel extends StatelessWidget {
+  const _BottomNavLabel({required this.tab, required this.active});
+
+  final AppTab tab;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      tab.label,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        color: active ? AppColors.ink : const Color(0xFF616365),
+        fontSize: 12,
+        height: 1.33,
+        letterSpacing: 0.6,
+        fontWeight: FontWeight.w500,
       ),
     );
   }
