@@ -31,4 +31,22 @@ class AppAssets {
 
   static const mapBackground = 'assets/images/map_background.png';
   static const mapPreview = 'assets/images/map_preview.png';
+
+  static const calendarXyz = 'assets/images/calendar_xyz.png';
+  static const calendarGallery = 'assets/images/calendar_gallery.png';
+  static const calendarBeauty = 'assets/images/calendar_beauty.png';
+
+  static const searchAvatar = 'assets/images/search_avatar.png';
+  static const searchResultExterior =
+      'assets/images/search_result_exterior.png';
+  static const searchResultInterior =
+      'assets/images/search_result_interior.png';
+  static const searchSimilarOne = 'assets/images/search_similar_1.png';
+  static const searchSimilarTwo = 'assets/images/search_similar_2.png';
+
+  static const detailHero = 'assets/images/detail_hero.png';
+  static const detailMap = 'assets/images/detail_map.png';
+  static const detailNearbyCafe = 'assets/images/detail_nearby_cafe.png';
+  static const detailNearbyRestaurant =
+      'assets/images/detail_nearby_restaurant.png';
 }
