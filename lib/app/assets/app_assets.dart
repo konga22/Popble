@@ -28,4 +28,7 @@ class AppAssets {
   static const homeNavHome = 'assets/images/home_nav_home.png';
   static const homeNavCommunity = 'assets/images/home_nav_community.png';
   static const homeNavProfile = 'assets/images/home_nav_profile.png';
+
+  static const mapBackground = 'assets/images/map_background.png';
+  static const mapPreview = 'assets/images/map_preview.png';
 }
