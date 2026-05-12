@@ -35,7 +35,7 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.background,
-      fontFamily: 'MoneygraphyRounded',
+      fontFamily: 'SUITE',
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.ink,
@@ -43,7 +43,7 @@ class AppTheme {
         elevation: 0,
         titleTextStyle: TextStyle(
           color: AppColors.ink,
-          fontFamily: 'MoveSans',
+          fontFamily: 'SUITE',
           fontSize: 24,
           fontWeight: FontWeight.w700,
         ),
