@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../app/assets/app_assets.dart';
 import '../../../app/router/app_page.dart';
@@ -101,10 +101,10 @@ class _HomeHeader extends StatelessWidget {
                 width: 32,
                 height: 32,
                 child: Center(
-                  child: SvgPicture.asset(
-                    AppAssets.homeHeaderSearch,
-                    width: 18,
-                    height: 18,
+                  child: Icon(
+                    LucideIcons.search,
+                    color: HomePage._title,
+                    size: 24,
                   ),
                 ),
               ),
@@ -201,7 +201,7 @@ class _HeroSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   const Text(
-                    '성수동 팝업: 더 모던 테라\n스',
+                    '성수동 팝업:\n더 모던 테라스',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 32,
@@ -276,22 +276,22 @@ class _QuickMenu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _QuickAction(
-              icon: AppAssets.homeQuickCalendar,
+              icon: LucideIcons.calendarDays,
               label: '팝업 캘린더',
               route: AppPage.calendar,
             ),
             _QuickAction(
-              icon: AppAssets.homeQuickNearby,
+              icon: LucideIcons.navigation,
               label: '내 주변 팝업',
               route: AppPage.map,
             ),
             _QuickAction(
-              icon: AppAssets.homeQuickRegion,
+              icon: LucideIcons.map,
               label: '지역별 팝업',
               route: AppPage.search,
             ),
             _QuickAction(
-              icon: AppAssets.homeQuickGenre,
+              icon: LucideIcons.shapes,
               label: '장르별 팝업',
               route: AppPage.search,
             ),
@@ -309,7 +309,7 @@ class _QuickAction extends StatelessWidget {
     required this.route,
   });
 
-  final String icon;
+  final IconData icon;
   final String label;
   final AppPage route;
 
@@ -330,7 +330,7 @@ class _QuickAction extends StatelessWidget {
                 border: Border.all(color: HomePage._border),
               ),
               child: Center(
-                child: SvgPicture.asset(icon, width: 24, height: 24),
+                child: Icon(icon, color: HomePage._title, size: 30),
               ),
             ),
             const SizedBox(height: 7.5),
@@ -489,10 +489,10 @@ class _TrendingCard extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SvgPicture.asset(
-                          AppAssets.homeHot,
-                          width: 10.7,
-                          height: 12,
+                        Icon(
+                          LucideIcons.flame,
+                          color: HomePage._danger,
+                          size: 13,
                         ),
                         const SizedBox(width: 4),
                         const Text(
@@ -711,13 +711,8 @@ class _FloatingReportButton extends StatelessWidget {
             ),
           ],
         ),
-        child: Center(
-          child: SvgPicture.asset(
-            AppAssets.homeFabPlus,
-            width: 18,
-            height: 18,
-            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-          ),
+        child: const Center(
+          child: Icon(LucideIcons.plus, color: Colors.white, size: 30),
         ),
       ),
     );
@@ -744,29 +739,28 @@ class _FigmaBottomNav extends StatelessWidget {
         child: Row(
           children: [
             _NavItem(
-              icon: AppAssets.homeNavSearch,
+              icon: LucideIcons.search,
               label: '검색',
               onTap: () => context.goNamed(AppPage.search.name),
             ),
             _NavItem(
-              icon: AppAssets.homeNavMap,
+              icon: LucideIcons.map,
               label: '지도',
               onTap: () => context.goNamed(AppPage.map.name),
             ),
             _NavItem(
-              icon: AppAssets.homeNavHome,
+              icon: LucideIcons.house,
               label: '홈',
               active: true,
-              iconSize: 38,
               onTap: () => context.goNamed(AppPage.home.name),
             ),
             _NavItem(
-              icon: AppAssets.homeNavCommunity,
+              icon: LucideIcons.messageCircle,
               label: '커뮤니티',
               onTap: () => context.goNamed(AppPage.community.name),
             ),
             _NavItem(
-              icon: AppAssets.homeNavProfile,
+              icon: LucideIcons.user,
               label: '프로필',
               onTap: () => context.goNamed(AppPage.profile.name),
             ),
@@ -783,14 +777,12 @@ class _NavItem extends StatelessWidget {
     required this.label,
     required this.onTap,
     this.active = false,
-    this.iconSize = 24,
   });
 
-  final String icon;
+  final IconData icon;
   final String label;
   final VoidCallback onTap;
   final bool active;
-  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -805,11 +797,18 @@ class _NavItem extends StatelessWidget {
               width: 44,
               height: 34,
               child: Center(
-                child: SvgPicture.asset(
-                  icon,
-                  width: iconSize,
-                  height: iconSize,
-                ),
+                child:
+                    active
+                        ? Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: HomePage._title,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(icon, color: Colors.white, size: 20),
+                        )
+                        : Icon(icon, color: HomePage._navText, size: 30),
               ),
             ),
             const SizedBox(height: 4),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../app/assets/app_assets.dart';
 import '../../../app/router/app_page.dart';
@@ -70,7 +70,7 @@ class OnboardingPage extends StatelessWidget {
                   const SizedBox(
                     width: 310,
                     child: Text(
-                      '웨이팅 시간 예측부터 맞춤형 큐레이션\n까지\n당신만의 감각적인 경험을 제안합니다',
+                      '웨이팅 시간 예측부터\n맞춤형 큐레이션까지\n당신만의 감각적인 경험을 제안합니다',
                       style: TextStyle(
                         color: _body,
                         fontSize: 17,
@@ -106,14 +106,10 @@ class OnboardingPage extends StatelessWidget {
                         children: [
                           const Text('시작하기'),
                           const SizedBox(width: 8),
-                          SvgPicture.asset(
-                            AppAssets.onboardingArrow,
-                            width: 16,
-                            height: 16,
-                            colorFilter: const ColorFilter.mode(
-                              Colors.white,
-                              BlendMode.srcIn,
-                            ),
+                          const Icon(
+                            LucideIcons.arrowRight,
+                            color: Colors.white,
+                            size: 22,
                           ),
                         ],
                       ),

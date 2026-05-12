@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../app/assets/app_assets.dart';
 import '../../../app/router/app_page.dart';
@@ -93,10 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             context.goNamed(AppPage.onboarding.name);
                           },
-                          icon: SvgPicture.asset(
-                            AppAssets.loginClose,
-                            width: 16.4,
-                            height: 16.4,
+                          icon: const Icon(
+                            LucideIcons.x,
+                            color: _title,
+                            size: 20,
                           ),
                         ),
                       ],
@@ -105,11 +106,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(20, 32, 20, 16),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 64),
+                        const SizedBox(height: 16),
                         const Text(
                           '반갑습니다!',
                           style: TextStyle(
@@ -132,43 +133,43 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: 24),
                         _SocialButton(
                           label: '카카오로 시작하기',
                           backgroundColor: const Color(0xFFFEE500),
                           textColor: const Color(0xFF191919),
-                          icon: AppAssets.loginKakao,
+                          assetIcon: AppAssets.loginKakao,
                           iconSize: 20,
                           onPressed: _onLogin,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 12),
                         _SocialButton(
                           label: 'Apple로 로그인',
                           backgroundColor: _ink,
                           textColor: Colors.white,
-                          icon: AppAssets.loginApple,
+                          lucideIcon: LucideIcons.apple,
                           iconSize: 18,
                           iconColor: Colors.white,
                           onPressed: _onLogin,
                           fontWeight: FontWeight.w700,
                         ),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: 22),
                         const _DividerWithText(),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: 22),
                         _FigmaTextField(
                           label: '이메일 주소',
                           hint: 'example@email.com',
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 14),
                         _FigmaTextField(
                           label: '비밀번호',
                           hint: '비밀번호를 입력하세요',
                           controller: _passwordController,
                           obscureText: true,
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -201,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                                     : const Text('로그인'),
                           ),
                         ),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: 16),
                         const _LoginLinks(),
                       ],
                     ),
@@ -221,9 +222,10 @@ class _SocialButton extends StatelessWidget {
     required this.label,
     required this.backgroundColor,
     required this.textColor,
-    required this.icon,
     required this.iconSize,
     required this.onPressed,
+    this.assetIcon,
+    this.lucideIcon,
     this.iconColor,
     this.fontWeight = FontWeight.w500,
   });
@@ -231,7 +233,8 @@ class _SocialButton extends StatelessWidget {
   final String label;
   final Color backgroundColor;
   final Color textColor;
-  final String icon;
+  final String? assetIcon;
+  final IconData? lucideIcon;
   final double iconSize;
   final Color? iconColor;
   final VoidCallback onPressed;
@@ -266,14 +269,11 @@ class _SocialButton extends StatelessWidget {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: SvgPicture.asset(
-                  icon,
-                  width: iconSize,
-                  height: iconSize,
-                  colorFilter:
-                      iconColor == null
-                          ? null
-                          : ColorFilter.mode(iconColor!, BlendMode.srcIn),
+                child: _SocialButtonIcon(
+                  assetIcon: assetIcon,
+                  iconData: lucideIcon,
+                  size: iconSize,
+                  color: iconColor,
                 ),
               ),
               Text(label),
@@ -281,6 +281,35 @@ class _SocialButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SocialButtonIcon extends StatelessWidget {
+  const _SocialButtonIcon({
+    required this.assetIcon,
+    required this.iconData,
+    required this.size,
+    required this.color,
+  });
+
+  final String? assetIcon;
+  final IconData? iconData;
+  final double size;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    if (iconData != null) {
+      return Icon(iconData, size: size, color: color);
+    }
+
+    return SvgPicture.asset(
+      assetIcon!,
+      width: size,
+      height: size,
+      colorFilter:
+          color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
     );
   }
 }
